@@ -159,18 +159,22 @@ export const useMapStore = create<MapStore>((set, get) => ({
   },
 }));
 
-// Initialise: try localStorage first, then fall back to the bundled JSON
+// Initialise: always load from the JSON file so updates are picked up.
+// localStorage is only used during the session to preserve drag positions etc.
 export async function initStore() {
+  try {
+    const res = await fetch('./data/campaign-map.json');
+    if (res.ok) {
+      const data = await res.json();
+      useMapStore.getState().loadData(data.nodes, data.edges);
+      return;
+    }
+  } catch (e) {
+    console.warn('Could not load map JSON, falling back to localStorage', e);
+  }
+  // Fallback to localStorage if JSON fetch fails (e.g. offline)
   const stored = loadFromStorage();
   if (stored && stored.nodes.length > 0) {
     useMapStore.getState().loadData(stored.nodes, stored.edges);
-    return;
-  }
-  try {
-    const res = await fetch('./data/campaign-map.json');
-    const data = await res.json();
-    useMapStore.getState().loadData(data.nodes, data.edges);
-  } catch (e) {
-    console.error('Could not load default map data', e);
   }
 }
