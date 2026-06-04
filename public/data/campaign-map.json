@@ -621,13 +621,6 @@
       "type": "allied"
     },
     {
-      "id": "e-athisa-juliette-1780545716724",
-      "source": "athisa",
-      "target": "juliette",
-      "label": "traveled north together",
-      "type": "allied"
-    },
-    {
       "id": "e-vaelios-lords-alliance-1780545731853",
       "source": "vaelios",
       "target": "lords-alliance",
