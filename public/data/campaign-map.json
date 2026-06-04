@@ -1,0 +1,680 @@
+{
+  "nodes": [
+    {
+      "id": "athisa",
+      "type": "pc",
+      "name": "Athisa",
+      "summary": "Cleric and scholar. Orphan raised by clerics; currently experiencing a crisis of faith. Carries a letter from a dead colleague whose contents weigh on her.",
+      "tags": [
+        "cleric",
+        "scholar",
+        "orphan"
+      ],
+      "position": {
+        "x": 100,
+        "y": 80
+      }
+    },
+    {
+      "id": "sparkle",
+      "type": "pc",
+      "name": "Sparkle Flame-Eater",
+      "summary": "High Elf Wizard and exiled royalty. Her homeland Alluria was lost to betrayal. She carries a flame-etched pendant — the only thing left of her kingdom. Recently drew the Throne card from the Deck of Many Things, legally making her the owner of a lost kingdom.",
+      "tags": [
+        "wizard",
+        "high elf",
+        "exiled royalty"
+      ],
+      "position": {
+        "x": -3400.5461314545887,
+        "y": -651.251174732535
+      }
+    },
+    {
+      "id": "vaelios",
+      "type": "pc",
+      "name": "Vaelios",
+      "summary": "Warlock whose patron is the Raven Queen. Attended the Gaunting Necromancer Academy. Possesses a dark metal ring with an opal stone that whispers and channels magic. Known by the nickname 'Vael'.",
+      "tags": [
+        "warlock",
+        "raven queen",
+        "necromancer academy"
+      ],
+      "position": {
+        "x": 500,
+        "y": 80
+      }
+    },
+    {
+      "id": "juliette",
+      "type": "pc",
+      "name": "Juliette Vaelith-Robespierre",
+      "summary": "Half-Elf Monk, 6'2\". Nicknamed 'Robes' (she dislikes it). Her parents own a failed vineyard called Elaria's Cask. Mentored by Grand Monk Jean-Paul Dain. Must earn glory and renown to be named heir by her grandmother Ithiriel Vaelith. Her missing ex-lover Fjord (a half-giant) is somewhere unknown.",
+      "tags": [
+        "monk",
+        "half-elf",
+        "vaelith heir"
+      ],
+      "position": {
+        "x": 700,
+        "y": 80
+      }
+    },
+    {
+      "id": "odvar-finch",
+      "type": "npc",
+      "name": "Odvar Finch",
+      "summary": "Merchant in Bryn Shander who runs the magic emporium 'Finch's Findings.'",
+      "tags": [
+        "merchant",
+        "bryn shander"
+      ],
+      "position": {
+        "x": 100,
+        "y": 320
+      }
+    },
+    {
+      "id": "mirelda-wester",
+      "type": "npc",
+      "name": "Mirelda Wester",
+      "summary": "Wrote a letter to Harbin warning about the increasing giant attacks on trade routes. The party needs to meet her at Council Hall in Bryn Shander.",
+      "tags": [
+        "bryn shander",
+        "council hall",
+        "giant threat"
+      ],
+      "position": {
+        "x": 793.9468484988149,
+        "y": 733.4448773390126
+      }
+    },
+    {
+      "id": "harbin",
+      "type": "npc",
+      "name": "Harbin Wester",
+      "summary": "Townmaster of Phandalin. Mirelda Wester's brother. Arranged for the party to travel north to Bryn Shander.",
+      "tags": [
+        "quest giver"
+      ],
+      "position": {
+        "x": 534.8157875422462,
+        "y": -882.531435732933
+      }
+    },
+    {
+      "id": "duvessa-shane",
+      "type": "npc",
+      "name": "Duvessa Shane",
+      "summary": "Speaker of Bryn Shander — effectively the town's leader and political authority.",
+      "tags": [
+        "bryn shander",
+        "speaker",
+        "politician"
+      ],
+      "position": {
+        "x": 900,
+        "y": 320
+      }
+    },
+    {
+      "id": "augrek-brighthelm",
+      "type": "npc",
+      "name": "Augrek Brighthelm",
+      "summary": "Red-haired Sheriff's Deputy in Bryn Shander. Greeted the party at the town gates.",
+      "tags": [
+        "bryn shander",
+        "sheriff",
+        "deputy"
+      ],
+      "position": {
+        "x": 1100,
+        "y": 320
+      }
+    },
+    {
+      "id": "jean-paul-dain",
+      "type": "npc",
+      "name": "Jean-Paul Dain",
+      "summary": "Grand Monk and Juliette's mentor.",
+      "tags": [
+        "monk",
+        "mentor"
+      ],
+      "position": {
+        "x": 100,
+        "y": 560
+      }
+    },
+    {
+      "id": "ithiriel-vaelith",
+      "type": "npc",
+      "name": "Ithiriel Vaelith",
+      "summary": "Juliette's grandmother. Has set a test for Juliette: earn glory and renown to be named heir to the Vaelith family.",
+      "tags": [
+        "vaelith",
+        "grandmother"
+      ],
+      "position": {
+        "x": 1022.430521207775,
+        "y": -12.468359545399819
+      }
+    },
+    {
+      "id": "fjord",
+      "type": "npc",
+      "name": "Fjord",
+      "summary": "Half-giant and Juliette's missing ex-lover. Whereabouts currently unknown.",
+      "tags": [
+        "half-giant",
+        "missing"
+      ],
+      "position": {
+        "x": 500,
+        "y": 560
+      }
+    },
+    {
+      "id": "esmeralda",
+      "type": "npc",
+      "name": "Esmeralda",
+      "summary": "An ancient, blindfolded seer and Servant of the Deck of Many Things. Her tent has since disappeared.",
+      "tags": [
+        "seer",
+        "deck of many things",
+        "mysterious"
+      ],
+      "position": {
+        "x": 1021.5744510124686,
+        "y": 582.8350490070712
+      }
+    },
+    {
+      "id": "raven-queen",
+      "type": "faction",
+      "name": "The Raven Queen",
+      "summary": "A powerful entity who serves as Vaelios' patron. She governs death and fate.",
+      "tags": [
+        "patron",
+        "death",
+        "fate"
+      ],
+      "position": {
+        "x": 69.09306417322668,
+        "y": 231.96061727813012
+      }
+    },
+    {
+      "id": "zhentarim",
+      "type": "faction",
+      "name": "Zhentarim",
+      "summary": "A shadowy merchant organization with agents across the region. Peaches is a former operative.",
+      "tags": [
+        "faction",
+        "merchants",
+        "shadow network"
+      ],
+      "position": {
+        "x": 1100,
+        "y": 560
+      }
+    },
+    {
+      "id": "bryn-shander",
+      "type": "place",
+      "name": "Bryn Shander",
+      "summary": "The largest of the Ten Towns in Icewind Dale. The party's current location. Home to Finch's Findings, the Council Hall, and several key NPCs.",
+      "tags": [
+        "ten towns",
+        "icewind dale",
+        "current location"
+      ],
+      "position": {
+        "x": -37.269838076025486,
+        "y": -54.06168135474488
+      }
+    },
+    {
+      "id": "actaeon",
+      "type": "pc",
+      "name": "Actaeon",
+      "summary": "An elderly orc paladin encountered at a roadside shrine on the journey north toward Icewind Dale. He joined the party as a fellow traveler and was forced into a desperate battle against an Avatar of Death after drawing from the Deck of Many Things.",
+      "tags": [
+        "orc",
+        "paladin",
+        "elderly",
+        "traveler"
+      ],
+      "position": {
+        "x": 1048.839957819118,
+        "y": 345.67571751801603
+      }
+    },
+    {
+      "id": "logan",
+      "type": "npc",
+      "name": "Logan",
+      "summary": "Sparkle's familiar, a fly, used to scout the mysterious purple tent belonging to Esmeralda before the party entered.",
+      "tags": [
+        "familiar",
+        "fly",
+        "companion"
+      ],
+      "position": {
+        "x": 823.1344492460425,
+        "y": 599.3557274623544
+      }
+    },
+    {
+      "id": "deck-of-many-things",
+      "type": "item",
+      "name": "Deck of Many Things",
+      "summary": "A legendary and dangerous magical artifact offered by Esmeralda for one hundred gold pieces per draw. The deck bestowed wild fortunes and disasters upon the party, including a Staff of Fire and the promise of a kingdom for Sparkle, Avatars of Death for Sparkle and Actaeon, and the loss of Vaelios's soul to the Void card.",
+      "tags": [
+        "artifact",
+        "magic",
+        "dangerous",
+        "legendary"
+      ],
+      "position": {
+        "x": -3648.763016004534,
+        "y": 869.3479329112297
+      }
+    },
+    {
+      "id": "phandalin",
+      "type": "place",
+      "name": "Phandalin",
+      "summary": "The town from which the party set out at the beginning of their journey north toward Icewind Dale.",
+      "tags": [
+        "town",
+        "starting-point",
+        "south"
+      ],
+      "position": {
+        "x": 276.24183775454424,
+        "y": 638.888319065176
+      }
+    },
+    {
+      "id": "icewind-dale",
+      "type": "place",
+      "name": "Icewind Dale",
+      "summary": "The frozen frontier region north of the Spine of the World that the party is traveling toward. Refugees are fleeing south from it, and rumors of giant attacks trouble the region.",
+      "tags": [
+        "region",
+        "frozen",
+        "frontier",
+        "dangerous"
+      ],
+      "position": {
+        "x": 92.00901984567207,
+        "y": 345.6757175180161
+      }
+    },
+    {
+      "id": "spine-of-the-world",
+      "type": "place",
+      "name": "Spine of the World",
+      "summary": "A mountain range whose looming peaks mark the threshold between the south and Icewind Dale, visible as the party traveled north.",
+      "tags": [
+        "mountains",
+        "landmark",
+        "north"
+      ],
+      "position": {
+        "x": -571.2765163827744,
+        "y": 478.64680046807155
+      }
+    },
+    {
+      "id": "house-of-the-triad",
+      "type": "place",
+      "name": "House of the Triad",
+      "summary": "A religious location noted by the party as worth visiting within the walls of Bryn Shander.",
+      "tags": [
+        "temple",
+        "religion",
+        "bryn-shander"
+      ],
+      "position": {
+        "x": 569.454439301704,
+        "y": -52.80551182134138
+      }
+    },
+    {
+      "id": "finch-s-findings",
+      "type": "place",
+      "name": "Finch's Findings",
+      "summary": "A magic shop in Bryn Shander run by Odvar Finch. The party traded unusual curiosities here for gold and magical supplies.",
+      "tags": [
+        "shop",
+        "magic",
+        "bryn-shander",
+        "trade"
+      ],
+      "position": {
+        "x": 867.7085292616366,
+        "y": 47.421627558083514
+      }
+    },
+    {
+      "id": "lords-alliance",
+      "type": "faction",
+      "name": "Lords' Alliance",
+      "summary": "The Lord's Alliance is a coalition of cities, nobles, and leaders dedicated to maintaining order and stability throughout the Sword Coast. While united by common goals, the alliance is often shaped by the competing interests and ambitions of its influential members.",
+      "tags": [],
+      "position": {
+        "x": 712.3656614120789,
+        "y": 423.3652227624258
+      }
+    },
+    {
+      "id": "asmodeus",
+      "type": "npc",
+      "name": "Asmodeus",
+      "summary": "A devil of the seven hells hunting Juliette after she drew the Flames card from the Deck of Many Things.",
+      "tags": [
+        "devil",
+        "juliette"
+      ],
+      "position": {
+        "x": 493.2665671469156,
+        "y": 201.78546370231908
+      }
+    },
+    {
+      "id": "sildar-hallwinter",
+      "type": "npc",
+      "name": "Sildar Hallwinter",
+      "summary": "A member of the Lords' Alliance in Phandalin. Originally helped the party reopen the Lost Mine of Phandelver and helped to slay Cryovain the White Dragon at Icespire Peak",
+      "tags": [],
+      "position": {
+        "x": 145.75834751457782,
+        "y": 322.4571951382144
+      }
+    }
+  ],
+  "edges": [
+    {
+      "id": "e1",
+      "source": "raven-queen",
+      "target": "vaelios",
+      "label": "patron of",
+      "type": "serves"
+    },
+    {
+      "id": "e7",
+      "source": "mirelda-wester",
+      "target": "harbin",
+      "label": "sister of",
+      "type": "allied"
+    },
+    {
+      "id": "e8",
+      "source": "harbin",
+      "target": "athisa",
+      "label": "sent north",
+      "type": "knows"
+    },
+    {
+      "id": "e9",
+      "source": "harbin",
+      "target": "sparkle",
+      "label": "sent north",
+      "type": "knows"
+    },
+    {
+      "id": "e10",
+      "source": "harbin",
+      "target": "vaelios",
+      "label": "sent north",
+      "type": "knows"
+    },
+    {
+      "id": "e11",
+      "source": "harbin",
+      "target": "juliette",
+      "label": "sent north",
+      "type": "knows"
+    },
+    {
+      "id": "e12",
+      "source": "jean-paul-dain",
+      "target": "juliette",
+      "label": "mentor of",
+      "type": "allied"
+    },
+    {
+      "id": "e13",
+      "source": "ithiriel-vaelith",
+      "target": "juliette",
+      "label": "grandmother; heir test",
+      "type": "allied"
+    },
+    {
+      "id": "e14",
+      "source": "juliette",
+      "target": "fjord",
+      "label": "ex-lover (missing)",
+      "type": "loves"
+    },
+    {
+      "id": "e15",
+      "source": "duvessa-shane",
+      "target": "bryn-shander",
+      "label": "speaker of",
+      "type": "serves"
+    },
+    {
+      "id": "e16",
+      "source": "augrek-brighthelm",
+      "target": "bryn-shander",
+      "label": "deputy of",
+      "type": "serves"
+    },
+    {
+      "id": "e17",
+      "source": "odvar-finch",
+      "target": "bryn-shander",
+      "label": "based in",
+      "type": "other"
+    },
+    {
+      "id": "e19",
+      "source": "mirelda-wester",
+      "target": "bryn-shander",
+      "label": "meeting at Council Hall",
+      "type": "other"
+    },
+    {
+      "id": "e20",
+      "source": "esmeralda",
+      "target": "sparkle",
+      "label": "gave Throne card",
+      "type": "other"
+    },
+    {
+      "id": "e-party-actaeon-met",
+      "source": "athisa",
+      "target": "actaeon",
+      "label": "met at roadside shrine",
+      "type": "allied"
+    },
+    {
+      "id": "e-sparkle-actaeon-allied",
+      "source": "sparkle",
+      "target": "actaeon",
+      "label": "traveled north together",
+      "type": "allied"
+    },
+    {
+      "id": "e-vaelios-actaeon-allied",
+      "source": "vaelios",
+      "target": "actaeon",
+      "label": "traveled north together",
+      "type": "allied"
+    },
+    {
+      "id": "e-juliette-actaeon-allied",
+      "source": "juliette",
+      "target": "actaeon",
+      "label": "met at roadside shrine",
+      "type": "allied"
+    },
+    {
+      "id": "e-sparkle-logan-familiar",
+      "source": "sparkle",
+      "target": "logan",
+      "label": "familiar of",
+      "type": "other"
+    },
+    {
+      "id": "e-esmeralda-deck",
+      "source": "esmeralda",
+      "target": "deck-of-many-things",
+      "label": "keeper of",
+      "type": "other"
+    },
+    {
+      "id": "e-sparkle-deck",
+      "source": "sparkle",
+      "target": "deck-of-many-things",
+      "label": "drew from",
+      "type": "other"
+    },
+    {
+      "id": "e-actaeon-deck",
+      "source": "actaeon",
+      "target": "deck-of-many-things",
+      "label": "drew from",
+      "type": "other"
+    },
+    {
+      "id": "e-vaelios-deck",
+      "source": "vaelios",
+      "target": "deck-of-many-things",
+      "label": "drew Void card",
+      "type": "other"
+    },
+    {
+      "id": "e-athisa-deck",
+      "source": "athisa",
+      "target": "deck-of-many-things",
+      "label": "drew Wish card",
+      "type": "other"
+    },
+    {
+      "id": "e-athisa-vaelios-wish",
+      "source": "athisa",
+      "target": "vaelios",
+      "label": "restored soul via Wish",
+      "type": "allied"
+    },
+    {
+      "id": "e-party-phandalin",
+      "source": "athisa",
+      "target": "phandalin",
+      "label": "departed from",
+      "type": "other"
+    },
+    {
+      "id": "e-party-seeks-icewind-dale",
+      "source": "athisa",
+      "target": "icewind-dale",
+      "label": "traveling toward",
+      "type": "seeks"
+    },
+    {
+      "id": "e-bryn-shander-icewind-dale",
+      "source": "bryn-shander",
+      "target": "icewind-dale",
+      "label": "located within",
+      "type": "other"
+    },
+    {
+      "id": "e-house-triad-bryn-shander",
+      "source": "house-of-the-triad",
+      "target": "bryn-shander",
+      "label": "located in",
+      "type": "other"
+    },
+    {
+      "id": "e-augrek-warned-party",
+      "source": "augrek-brighthelm",
+      "target": "athisa",
+      "label": "warned of cold and giants",
+      "type": "other"
+    },
+    {
+      "id": "e-finch-s-findings-odvar-finch-1780545027843",
+      "source": "finch-s-findings",
+      "target": "odvar-finch",
+      "label": "Owned by",
+      "type": "other"
+    },
+    {
+      "id": "e-mirelda-wester-harbin-1780545367674",
+      "source": "mirelda-wester",
+      "target": "harbin",
+      "label": "Sibling of",
+      "type": "allied"
+    },
+    {
+      "id": "e-vaelios-athisa-1780545679145",
+      "source": "vaelios",
+      "target": "athisa",
+      "label": "traveled north together",
+      "type": "allied"
+    },
+    {
+      "id": "e-athisa-sparkle-1780545706549",
+      "source": "athisa",
+      "target": "sparkle",
+      "label": "traveled north together",
+      "type": "allied"
+    },
+    {
+      "id": "e-athisa-juliette-1780545716724",
+      "source": "athisa",
+      "target": "juliette",
+      "label": "traveled north together",
+      "type": "allied"
+    },
+    {
+      "id": "e-vaelios-lords-alliance-1780545731853",
+      "source": "vaelios",
+      "target": "lords-alliance",
+      "label": "member of",
+      "type": "member"
+    },
+    {
+      "id": "e-harbin-phandalin-1780545781360",
+      "source": "harbin",
+      "target": "phandalin",
+      "label": "Townmaster of",
+      "type": "serves"
+    },
+    {
+      "id": "e-asmodeus-juliette-1780545931346",
+      "source": "asmodeus",
+      "target": "juliette",
+      "label": "seeks to kill",
+      "type": "seeks"
+    },
+    {
+      "id": "e-sildar-hallwinter-lords-alliance-1780546035924",
+      "source": "sildar-hallwinter",
+      "target": "lords-alliance",
+      "label": "allied with",
+      "type": "member"
+    },
+    {
+      "id": "e-sildar-hallwinter-vaelios-1780546048879",
+      "source": "sildar-hallwinter",
+      "target": "vaelios",
+      "label": "mentor",
+      "type": "allied"
+    }
+  ]
+}
