@@ -167,7 +167,7 @@ export async function initStore() {
     return;
   }
   try {
-    const res = await fetch('./data/map.json');
+    const res = await fetch('./data/campaign-map.json');
     const data = await res.json();
     useMapStore.getState().loadData(data.nodes, data.edges);
   } catch (e) {
