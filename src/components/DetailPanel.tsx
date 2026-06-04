@@ -30,6 +30,7 @@ export function DetailPanel({ onEdit, onAddEdge }: DetailPanelProps) {
   const edges          = useMapStore((s) => s.edges);
   const selectNode     = useMapStore((s) => s.selectNode);
   const deleteNode     = useMapStore((s) => s.deleteNode);
+  const deleteEdge     = useMapStore((s) => s.deleteEdge);
   const settings       = useMapStore((s) => s.settings);
   const gmMode         = useMapStore((s) => s.gmMode);
 
@@ -188,42 +189,63 @@ export function DetailPanel({ onEdit, onAddEdge }: DetailPanelProps) {
                       ? (settings.nodeColors[rel.otherType] ?? TYPE_COLORS[rel.otherType])
                       : '#6b7280';
                     return (
-                      <button
+                      <div
                         key={rel.edgeId}
-                        onClick={() => handleJump(rel.otherId)}
-                        style={{
-                          display: 'flex', alignItems: 'center', gap: 10,
-                          background: 'rgba(255,255,255,0.04)',
-                          border: '1px solid rgba(255,255,255,0.07)',
-                          borderRadius: 8, padding: '8px 10px',
-                          cursor: 'pointer', textAlign: 'left',
-                          transition: 'background 0.15s',
-                          width: '100%',
-                        }}
-                        onMouseEnter={(e) => (e.currentTarget.style.background = 'rgba(255,255,255,0.09)')}
-                        onMouseLeave={(e) => (e.currentTarget.style.background = 'rgba(255,255,255,0.04)')}
+                        style={{ display: 'flex', alignItems: 'center', gap: 6 }}
                       >
-                        {/* Direction arrow */}
-                        <span style={{ fontSize: 12, color: '#4b5563', flexShrink: 0 }}>
-                          {rel.direction === 'out' ? '→' : '←'}
-                        </span>
-
-                        {/* Relationship label */}
-                        <span style={{ fontSize: 11, color: '#6b7280', flexShrink: 0, fontStyle: 'italic' }}>
-                          {rel.label}
-                        </span>
-
-                        {/* Other node name */}
-                        <span style={{ display: 'flex', alignItems: 'center', gap: 6, marginLeft: 'auto' }}>
-                          <span style={{
-                            width: 8, height: 8, borderRadius: '50%',
-                            backgroundColor: otherColor, flexShrink: 0,
-                          }} />
-                          <span style={{ fontSize: 13, fontWeight: 500, color: '#e5e7eb' }}>
-                            {rel.otherName}
+                        {/* Clickable relationship row */}
+                        <button
+                          onClick={() => handleJump(rel.otherId)}
+                          style={{
+                            flex: 1, display: 'flex', alignItems: 'center', gap: 10,
+                            background: 'rgba(255,255,255,0.04)',
+                            border: '1px solid rgba(255,255,255,0.07)',
+                            borderRadius: 8, padding: '8px 10px',
+                            cursor: 'pointer', textAlign: 'left',
+                            transition: 'background 0.15s',
+                          }}
+                          onMouseEnter={(e) => (e.currentTarget.style.background = 'rgba(255,255,255,0.09)')}
+                          onMouseLeave={(e) => (e.currentTarget.style.background = 'rgba(255,255,255,0.04)')}
+                        >
+                          <span style={{ fontSize: 12, color: '#4b5563', flexShrink: 0 }}>
+                            {rel.direction === 'out' ? '→' : '←'}
                           </span>
-                        </span>
-                      </button>
+                          <span style={{ fontSize: 11, color: '#6b7280', flexShrink: 0, fontStyle: 'italic' }}>
+                            {rel.label}
+                          </span>
+                          <span style={{ display: 'flex', alignItems: 'center', gap: 6, marginLeft: 'auto' }}>
+                            <span style={{ width: 8, height: 8, borderRadius: '50%', backgroundColor: otherColor, flexShrink: 0 }} />
+                            <span style={{ fontSize: 13, fontWeight: 500, color: '#e5e7eb' }}>
+                              {rel.otherName}
+                            </span>
+                          </span>
+                        </button>
+
+                        {/* Delete connection — GM only */}
+                        {gmMode && (
+                          <button
+                            onClick={() => {
+                              if (confirm(`Remove "${rel.label}" connection?`)) {
+                                deleteEdge(rel.edgeId);
+                              }
+                            }}
+                            title="Remove this connection"
+                            style={{
+                              flexShrink: 0, width: 28, height: 28,
+                              display: 'flex', alignItems: 'center', justifyContent: 'center',
+                              background: 'rgba(220,38,38,0.08)',
+                              border: '1px solid rgba(220,38,38,0.2)',
+                              borderRadius: 6, cursor: 'pointer',
+                              color: '#f87171', fontSize: 13,
+                              transition: 'background 0.15s',
+                            }}
+                            onMouseEnter={(e) => (e.currentTarget.style.background = 'rgba(220,38,38,0.2)')}
+                            onMouseLeave={(e) => (e.currentTarget.style.background = 'rgba(220,38,38,0.08)')}
+                          >
+                            🗑
+                          </button>
+                        )}
+                      </div>
                     );
                   })}
                 </div>
