@@ -1,6 +1,6 @@
 import { useState } from 'react';
 import { useMapStore } from '../store/mapStore';
-import { parseTranscript, type ProposedNode, type ProposedEdge } from '../lib/parseTranscript';
+import { parseTranscript, type ProposedNode, type ProposedEdge, type ProposedPlot } from '../lib/parseTranscript';
 import type { NodeType } from '../types';
 
 const TYPE_COLORS: Record<NodeType, string> = {
@@ -14,12 +14,19 @@ interface ImportModalProps {
 
 type Step = 'paste' | 'loading' | 'review' | 'error';
 
+const STATUS_COLORS: Record<string, string> = {
+  active: '#ef4444', dormant: '#f59e0b', resolved: '#22c55e',
+};
+
 export function ImportModal({ open, onClose }: ImportModalProps) {
   const nodes       = useMapStore((s) => s.nodes);
   const edges       = useMapStore((s) => s.edges);
+  const plots       = useMapStore((s) => s.plots);
   const addNode     = useMapStore((s) => s.addNode);
   const updateNode  = useMapStore((s) => s.updateNode);
   const addEdge     = useMapStore((s) => s.addEdge);
+  const addPlot     = useMapStore((s) => s.addPlot);
+  const updatePlot  = useMapStore((s) => s.updatePlot);
 
   const [step, setStep]         = useState<Step>('paste');
   const [transcript, setTranscript] = useState('');
@@ -27,14 +34,24 @@ export function ImportModal({ open, onClose }: ImportModalProps) {
 
   const [proposedNodes, setProposedNodes] = useState<ProposedNode[]>([]);
   const [proposedEdges, setProposedEdges] = useState<ProposedEdge[]>([]);
+  const [proposedPlots, setProposedPlots] = useState<ProposedPlot[]>([]);
   const [acceptedNodes, setAcceptedNodes] = useState<Set<string>>(new Set());
   const [acceptedEdges, setAcceptedEdges] = useState<Set<string>>(new Set());
+  const [acceptedPlots, setAcceptedPlots] = useState<Set<string>>(new Set());
+  // Which items are marked GM-only (hidden from players)
+  const [hiddenNodes, setHiddenNodes] = useState<Set<string>>(new Set());
+  const [hiddenEdges, setHiddenEdges] = useState<Set<string>>(new Set());
+  const [hiddenPlots, setHiddenPlots] = useState<Set<string>>(new Set());
 
   function handleClose() {
     setStep('paste');
     setTranscript('');
     setProposedNodes([]);
     setProposedEdges([]);
+    setProposedPlots([]);
+    setHiddenNodes(new Set());
+    setHiddenEdges(new Set());
+    setHiddenPlots(new Set());
     onClose();
   }
 
@@ -45,7 +62,7 @@ export function ImportModal({ open, onClose }: ImportModalProps) {
 
     let result;
     try {
-      result = await parseTranscript(transcript, nodes, edges);
+      result = await parseTranscript(transcript, nodes, edges, plots);
     } catch (err: unknown) {
       const msg = err instanceof Error ? err.message : String(err);
       setErrorMsg(`Unexpected error: ${msg}`);
@@ -59,17 +76,22 @@ export function ImportModal({ open, onClose }: ImportModalProps) {
       return;
     }
 
-    if (result.nodes.length === 0 && result.edges.length === 0) {
-      setErrorMsg('Claude found no new entities or relationships in this text. Try pasting a fuller transcript or summary.');
+    if (result.nodes.length === 0 && result.edges.length === 0 && result.plots.length === 0) {
+      setErrorMsg('Claude found no new entities, relationships, or plot threads in this text. Try pasting a fuller transcript or summary.');
       setStep('error');
       return;
     }
 
     setProposedNodes(result.nodes);
     setProposedEdges(result.edges);
-    // Default: accept all
+    setProposedPlots(result.plots);
+    // Default: accept all, nothing hidden
     setAcceptedNodes(new Set(result.nodes.map((n) => n.id)));
     setAcceptedEdges(new Set(result.edges.map((e) => e.id)));
+    setAcceptedPlots(new Set(result.plots.map((p) => p.id)));
+    setHiddenNodes(new Set());
+    setHiddenEdges(new Set());
+    setHiddenPlots(new Set());
     setStep('review');
   }
 
@@ -89,6 +111,24 @@ export function ImportModal({ open, onClose }: ImportModalProps) {
     });
   }
 
+  function togglePlot(id: string) {
+    setAcceptedPlots((prev) => {
+      const next = new Set(prev);
+      next.has(id) ? next.delete(id) : next.add(id);
+      return next;
+    });
+  }
+
+  function toggleHiddenNode(id: string) {
+    setHiddenNodes((prev) => { const s = new Set(prev); s.has(id) ? s.delete(id) : s.add(id); return s; });
+  }
+  function toggleHiddenEdge(id: string) {
+    setHiddenEdges((prev) => { const s = new Set(prev); s.has(id) ? s.delete(id) : s.add(id); return s; });
+  }
+  function toggleHiddenPlot(id: string) {
+    setHiddenPlots((prev) => { const s = new Set(prev); s.has(id) ? s.delete(id) : s.add(id); return s; });
+  }
+
   function handleConfirm() {
     // Find a spread-out position for new nodes
     const usedPositions = nodes.map((n) => n.position);
@@ -103,16 +143,28 @@ export function ImportModal({ open, onClose }: ImportModalProps) {
     let newIdx = 0;
     proposedNodes.forEach((n) => {
       if (!acceptedNodes.has(n.id)) return;
+      const hidden = hiddenNodes.has(n.id) ? true : undefined;
       if (n.isNew) {
-        addNode({ id: n.id, type: n.type, name: n.name, summary: n.summary, tags: n.tags, position: findPosition(newIdx++) });
+        addNode({ id: n.id, type: n.type, name: n.name, summary: n.summary, tags: n.tags, hidden, position: findPosition(newIdx++) });
       } else if (n.existingId) {
-        updateNode(n.existingId, { summary: n.summary, tags: n.tags });
+        updateNode(n.existingId, { summary: n.summary, tags: n.tags, ...(hidden !== undefined ? { hidden } : {}) });
       }
     });
 
     proposedEdges.forEach((e) => {
       if (!acceptedEdges.has(e.id)) return;
-      addEdge({ id: e.id, source: e.source, target: e.target, label: e.label, type: e.type });
+      const hidden = hiddenEdges.has(e.id) ? true : undefined;
+      addEdge({ id: e.id, source: e.source, target: e.target, label: e.label, type: e.type, hidden });
+    });
+
+    proposedPlots.forEach((p) => {
+      if (!acceptedPlots.has(p.id)) return;
+      const hidden = hiddenPlots.has(p.id) ? true : undefined;
+      if (p.isNew) {
+        addPlot({ id: p.id, title: p.title, summary: p.summary, status: p.status, relatedNodeIds: p.relatedNodeIds, session: p.session, hidden });
+      } else if (p.existingId) {
+        updatePlot(p.existingId, { summary: p.summary, status: p.status, relatedNodeIds: p.relatedNodeIds, ...(hidden !== undefined ? { hidden } : {}) });
+      }
     });
 
     handleClose();
@@ -231,23 +283,23 @@ export function ImportModal({ open, onClose }: ImportModalProps) {
                   <div style={{ display: 'flex', flexDirection: 'column', gap: 6 }}>
                     {proposedNodes.map((n) => {
                       const accepted = acceptedNodes.has(n.id);
+                      const isHidden = hiddenNodes.has(n.id);
                       const color    = TYPE_COLORS[n.type] ?? '#6b7280';
                       return (
                         <div
                           key={n.id}
-                          onClick={() => toggleNode(n.id)}
                           style={{
                             display: 'flex', alignItems: 'flex-start', gap: 12,
-                            padding: '10px 12px', borderRadius: 10, cursor: 'pointer',
-                            border: `1px solid ${accepted ? 'rgba(79,70,229,0.4)' : 'rgba(255,255,255,0.06)'}`,
-                            background: accepted ? 'rgba(79,70,229,0.08)' : 'rgba(255,255,255,0.03)',
+                            padding: '10px 12px', borderRadius: 10,
+                            border: `1px solid ${accepted ? (isHidden ? 'rgba(234,179,8,0.4)' : 'rgba(79,70,229,0.4)') : 'rgba(255,255,255,0.06)'}`,
+                            background: accepted ? (isHidden ? 'rgba(234,179,8,0.06)' : 'rgba(79,70,229,0.08)') : 'rgba(255,255,255,0.03)',
                             transition: 'all 0.15s',
                             opacity: accepted ? 1 : 0.45,
                           }}
                         >
                           {/* Checkbox */}
-                          <div style={{
-                            width: 18, height: 18, borderRadius: 5, flexShrink: 0, marginTop: 1,
+                          <div onClick={() => toggleNode(n.id)} style={{
+                            width: 18, height: 18, borderRadius: 5, flexShrink: 0, marginTop: 1, cursor: 'pointer',
                             border: `2px solid ${accepted ? '#4f46e5' : 'rgba(255,255,255,0.2)'}`,
                             background: accepted ? '#4f46e5' : 'transparent',
                             display: 'flex', alignItems: 'center', justifyContent: 'center',
@@ -256,7 +308,7 @@ export function ImportModal({ open, onClose }: ImportModalProps) {
                           </div>
 
                           {/* Content */}
-                          <div style={{ flex: 1, minWidth: 0 }}>
+                          <div onClick={() => toggleNode(n.id)} style={{ flex: 1, minWidth: 0, cursor: 'pointer' }}>
                             <div style={{ display: 'flex', alignItems: 'center', gap: 8, marginBottom: 3 }}>
                               <span style={{ width: 8, height: 8, borderRadius: '50%', backgroundColor: color, flexShrink: 0 }} />
                               <span style={{ fontSize: 14, fontWeight: 600, color: '#f3f4f6' }}>{n.name}</span>
@@ -276,6 +328,21 @@ export function ImportModal({ open, onClose }: ImportModalProps) {
                               </div>
                             )}
                           </div>
+
+                          {/* GM-only toggle */}
+                          <button
+                            onClick={(e) => { e.stopPropagation(); toggleHiddenNode(n.id); }}
+                            title={isHidden ? 'GM only — click to make player-visible' : 'Visible to players — click to make GM only'}
+                            style={{
+                              flexShrink: 0, marginTop: 1, padding: '3px 8px', borderRadius: 6, cursor: 'pointer', fontSize: 11,
+                              background: isHidden ? 'rgba(234,179,8,0.15)' : 'rgba(255,255,255,0.05)',
+                              border: `1px solid ${isHidden ? 'rgba(234,179,8,0.4)' : 'rgba(255,255,255,0.1)'}`,
+                              color: isHidden ? '#fbbf24' : '#4b5563',
+                              transition: 'all 0.15s', fontFamily: "system-ui,'Segoe UI',sans-serif",
+                            }}
+                          >
+                            {isHidden ? '🔒 GM' : '👁'}
+                          </button>
                         </div>
                       );
                     })}
@@ -292,22 +359,22 @@ export function ImportModal({ open, onClose }: ImportModalProps) {
                   <div style={{ display: 'flex', flexDirection: 'column', gap: 6 }}>
                     {proposedEdges.map((e) => {
                       const accepted = acceptedEdges.has(e.id);
+                      const isHidden = hiddenEdges.has(e.id);
                       return (
                         <div
                           key={e.id}
-                          onClick={() => toggleEdge(e.id)}
                           style={{
                             display: 'flex', alignItems: 'center', gap: 10,
-                            padding: '8px 12px', borderRadius: 10, cursor: 'pointer',
-                            border: `1px solid ${accepted ? 'rgba(79,70,229,0.4)' : 'rgba(255,255,255,0.06)'}`,
-                            background: accepted ? 'rgba(79,70,229,0.08)' : 'rgba(255,255,255,0.03)',
+                            padding: '8px 12px', borderRadius: 10,
+                            border: `1px solid ${accepted ? (isHidden ? 'rgba(234,179,8,0.4)' : 'rgba(79,70,229,0.4)') : 'rgba(255,255,255,0.06)'}`,
+                            background: accepted ? (isHidden ? 'rgba(234,179,8,0.06)' : 'rgba(79,70,229,0.08)') : 'rgba(255,255,255,0.03)',
                             transition: 'all 0.15s',
                             opacity: accepted ? 1 : 0.45,
                           }}
                         >
                           {/* Checkbox */}
-                          <div style={{
-                            width: 18, height: 18, borderRadius: 5, flexShrink: 0,
+                          <div onClick={() => toggleEdge(e.id)} style={{
+                            width: 18, height: 18, borderRadius: 5, flexShrink: 0, cursor: 'pointer',
                             border: `2px solid ${accepted ? '#4f46e5' : 'rgba(255,255,255,0.2)'}`,
                             background: accepted ? '#4f46e5' : 'transparent',
                             display: 'flex', alignItems: 'center', justifyContent: 'center',
@@ -315,9 +382,99 @@ export function ImportModal({ open, onClose }: ImportModalProps) {
                             {accepted && <span style={{ color: '#fff', fontSize: 11, fontWeight: 700 }}>✓</span>}
                           </div>
 
-                          <span style={{ fontSize: 13, fontWeight: 500, color: '#e5e7eb' }}>{e.sourceName}</span>
-                          <span style={{ fontSize: 12, color: '#6b7280', fontStyle: 'italic' }}>→ {e.label} →</span>
-                          <span style={{ fontSize: 13, fontWeight: 500, color: '#e5e7eb' }}>{e.targetName}</span>
+                          <div onClick={() => toggleEdge(e.id)} style={{ flex: 1, display: 'flex', alignItems: 'center', gap: 10, cursor: 'pointer' }}>
+                            <span style={{ fontSize: 13, fontWeight: 500, color: '#e5e7eb' }}>{e.sourceName}</span>
+                            <span style={{ fontSize: 12, color: '#6b7280', fontStyle: 'italic' }}>→ {e.label} →</span>
+                            <span style={{ fontSize: 13, fontWeight: 500, color: '#e5e7eb' }}>{e.targetName}</span>
+                          </div>
+
+                          {/* GM-only toggle */}
+                          <button
+                            onClick={(e2) => { e2.stopPropagation(); toggleHiddenEdge(e.id); }}
+                            title={isHidden ? 'GM only — click to make player-visible' : 'Visible to players — click to make GM only'}
+                            style={{
+                              flexShrink: 0, padding: '3px 8px', borderRadius: 6, cursor: 'pointer', fontSize: 11,
+                              background: isHidden ? 'rgba(234,179,8,0.15)' : 'rgba(255,255,255,0.05)',
+                              border: `1px solid ${isHidden ? 'rgba(234,179,8,0.4)' : 'rgba(255,255,255,0.1)'}`,
+                              color: isHidden ? '#fbbf24' : '#4b5563',
+                              transition: 'all 0.15s', fontFamily: "system-ui,'Segoe UI',sans-serif",
+                            }}
+                          >
+                            {isHidden ? '🔒 GM' : '👁'}
+                          </button>
+                        </div>
+                      );
+                    })}
+                  </div>
+                </div>
+              )}
+
+              {/* Proposed plot threads */}
+              {proposedPlots.length > 0 && (
+                <div>
+                  <div style={sectionLabel}>
+                    Plot Threads ({acceptedPlots.size}/{proposedPlots.length} accepted)
+                  </div>
+                  <div style={{ display: 'flex', flexDirection: 'column', gap: 6 }}>
+                    {proposedPlots.map((p) => {
+                      const accepted    = acceptedPlots.has(p.id);
+                      const isHidden    = hiddenPlots.has(p.id);
+                      const statusColor = STATUS_COLORS[p.status] ?? '#6b7280';
+                      return (
+                        <div
+                          key={p.id}
+                          style={{
+                            display: 'flex', alignItems: 'flex-start', gap: 12,
+                            padding: '10px 12px', borderRadius: 10,
+                            border: `1px solid ${accepted ? (isHidden ? 'rgba(234,179,8,0.4)' : 'rgba(79,70,229,0.4)') : 'rgba(255,255,255,0.06)'}`,
+                            background: accepted ? (isHidden ? 'rgba(234,179,8,0.06)' : 'rgba(79,70,229,0.08)') : 'rgba(255,255,255,0.03)',
+                            transition: 'all 0.15s',
+                            opacity: accepted ? 1 : 0.45,
+                          }}
+                        >
+                          {/* Checkbox */}
+                          <div onClick={() => togglePlot(p.id)} style={{
+                            width: 18, height: 18, borderRadius: 5, flexShrink: 0, marginTop: 2, cursor: 'pointer',
+                            border: `2px solid ${accepted ? '#4f46e5' : 'rgba(255,255,255,0.2)'}`,
+                            background: accepted ? '#4f46e5' : 'transparent',
+                            display: 'flex', alignItems: 'center', justifyContent: 'center',
+                          }}>
+                            {accepted && <span style={{ color: '#fff', fontSize: 11, fontWeight: 700 }}>✓</span>}
+                          </div>
+
+                          <div onClick={() => togglePlot(p.id)} style={{ flex: 1, minWidth: 0, cursor: 'pointer' }}>
+                            <div style={{ display: 'flex', alignItems: 'center', gap: 8, marginBottom: 3 }}>
+                              <span style={{ width: 8, height: 8, borderRadius: '50%', backgroundColor: statusColor, flexShrink: 0, boxShadow: `0 0 5px ${statusColor}88` }} />
+                              <span style={{ fontSize: 14, fontWeight: 600, color: '#f3f4f6' }}>{p.title}</span>
+                              <span style={{ fontSize: 10, color: statusColor, textTransform: 'uppercase', letterSpacing: '0.06em', fontWeight: 600 }}>{p.status}</span>
+                              {!p.isNew && (
+                                <span style={{ fontSize: 10, color: '#f59e0b', background: 'rgba(245,158,11,0.12)', border: '1px solid rgba(245,158,11,0.3)', borderRadius: 4, padding: '1px 6px' }}>
+                                  update
+                                </span>
+                              )}
+                              {p.session != null && (
+                                <span style={{ fontSize: 10, color: '#6b7280', marginLeft: 'auto' }}>S{p.session}</span>
+                              )}
+                            </div>
+                            {p.summary && (
+                              <p style={{ margin: 0, fontSize: 12, color: '#9ca3af', lineHeight: 1.5 }}>{p.summary}</p>
+                            )}
+                          </div>
+
+                          {/* GM-only toggle */}
+                          <button
+                            onClick={(e) => { e.stopPropagation(); toggleHiddenPlot(p.id); }}
+                            title={isHidden ? 'GM only — click to make player-visible' : 'Visible to players — click to make GM only'}
+                            style={{
+                              flexShrink: 0, marginTop: 1, padding: '3px 8px', borderRadius: 6, cursor: 'pointer', fontSize: 11,
+                              background: isHidden ? 'rgba(234,179,8,0.15)' : 'rgba(255,255,255,0.05)',
+                              border: `1px solid ${isHidden ? 'rgba(234,179,8,0.4)' : 'rgba(255,255,255,0.1)'}`,
+                              color: isHidden ? '#fbbf24' : '#4b5563',
+                              transition: 'all 0.15s', fontFamily: "system-ui,'Segoe UI',sans-serif",
+                            }}
+                          >
+                            {isHidden ? '🔒 GM' : '👁'}
+                          </button>
                         </div>
                       );
                     })}
@@ -357,15 +514,15 @@ export function ImportModal({ open, onClose }: ImportModalProps) {
               </button>
               <button
                 onClick={handleConfirm}
-                disabled={acceptedNodes.size === 0 && acceptedEdges.size === 0}
+                disabled={acceptedNodes.size === 0 && acceptedEdges.size === 0 && acceptedPlots.size === 0}
                 style={{
                   padding: '8px 20px', borderRadius: 8, border: 'none',
-                  background: (acceptedNodes.size > 0 || acceptedEdges.size > 0) ? '#4f46e5' : 'rgba(79,70,229,0.3)',
+                  background: (acceptedNodes.size > 0 || acceptedEdges.size > 0 || acceptedPlots.size > 0) ? '#4f46e5' : 'rgba(79,70,229,0.3)',
                   color: '#fff', fontSize: 13, fontWeight: 600,
-                  cursor: (acceptedNodes.size > 0 || acceptedEdges.size > 0) ? 'pointer' : 'not-allowed',
+                  cursor: (acceptedNodes.size > 0 || acceptedEdges.size > 0 || acceptedPlots.size > 0) ? 'pointer' : 'not-allowed',
                 }}
               >
-                Add {acceptedNodes.size + acceptedEdges.size} items to map →
+                Add {acceptedNodes.size + acceptedEdges.size + acceptedPlots.size} items to map →
               </button>
             </>
           )}

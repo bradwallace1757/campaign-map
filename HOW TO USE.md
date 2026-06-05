@@ -70,6 +70,10 @@ Do this after each session when you're happy with the map:
 - Players see the map in **read-only mode** — they can search, click nodes, and pan/zoom but cannot edit anything
 - Your **API key** lives in the `.env` file — never share or upload that file
 - If the proxy terminal shows an error, just tell Claude to restart it
+- **Path has a space** — if you ever run terminal commands manually, always quote the path:
+  ```powershell
+  cd "C:\Users\bradl\OneDrive\Documents\Claude\DnD Memory\campaign-map"
+  ```
 
 ---
 

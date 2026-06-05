@@ -662,5 +662,93 @@
       "label": "drew Flames card",
       "type": "other"
     }
+  ],
+  "plots": [
+    {
+      "id": "giant-threat",
+      "title": "The Giant Threat",
+      "priority": "high",
+      "summary": "Giant attacks are increasing across Icewind Dale. Caravans are missing, farms destroyed, and even veteran traders are skipping their northern runs this season. Something has changed in the giants' hierarchy — the party must meet Mirelda Wester at Council Hall to learn more.",
+      "status": "active",
+      "relatedNodeIds": [
+        "athisa",
+        "sparkle",
+        "vaelios",
+        "juliette",
+        "actaeon",
+        "mirelda-wester",
+        "duvessa-shane",
+        "bryn-shander",
+        "icewind-dale"
+      ],
+      "session": 1
+    },
+    {
+      "id": "raven-queen-order",
+      "title": "Raven Queen's Order",
+      "priority": "high",
+      "summary": "The Raven Queen has ordered Vaelios to kill Odvar Finch, whose soul has evaded its natural death and is owed to the Nine Hells. She threatens to revoke his undead companions if he refuses. Vaelios has not yet acted. Complications: killing Finch may trigger a conflict between the Hells and the Raven Queen, and the party loses their magic item vendor.",
+      "status": "active",
+      "relatedNodeIds": [
+        "vaelios",
+        "raven-queen",
+        "odvar-finch"
+      ],
+      "session": 1
+    },
+    {
+      "id": "zhentarim-recruitment",
+      "title": "Zhentarim Recruitment",
+      "priority": "high",
+      "hidden": true,
+      "summary": "The Zhentarim reached out to Sparkle in Elvish, claiming to know who destroyed her homeland Alluria and what was taken. They offer recognition, revenge, and power — but want a demonstration of her intentions. Her first contact is Kella Darkhope in Bryn Shander, posing as a traveling monk. A postscript noted they are already watching her.",
+      "status": "active",
+      "relatedNodeIds": [
+        "sparkle",
+        "zhentarim",
+        "bryn-shander"
+      ],
+      "session": 1
+    },
+    {
+      "id": "juliette-inheritance",
+      "title": "Juliette's Inheritance Quest",
+      "priority": "medium",
+      "summary": "Juliette's grandmother Ithiriel Vaelith demands she earn glory and renown before being acknowledged as heir. Her father is dead, her mother dying, and the family vineyard Elaria's Cask has failed. She is also searching for her missing ex-lover Fjord, a half-giant last known to be somewhere in the north.",
+      "status": "active",
+      "relatedNodeIds": [
+        "juliette",
+        "ithiriel-vaelith",
+        "fjord",
+        "jean-paul-dain"
+      ],
+      "session": 1
+    },
+    {
+      "id": "sparkle-lost-kingdom",
+      "title": "Sparkle's Lost Kingdom",
+      "priority": "medium",
+      "summary": "Sparkle drew the Throne card from the Deck of Many Things, making her the legal owner of a lost kingdom. She must find and reclaim it. This intertwines with the Zhentarim's offer — they claim to know who destroyed her homeland Alluria and what was taken from it.",
+      "status": "active",
+      "relatedNodeIds": [
+        "sparkle",
+        "deck-of-many-things",
+        "zhentarim"
+      ],
+      "session": 1
+    },
+    {
+      "id": "athisa-faith-crisis",
+      "title": "Athisa's Faith Crisis",
+      "priority": "low",
+      "summary": "Athisa is an orphan raised by clerics who is experiencing a deep crisis of faith. She carries a letter from a dead colleague whose contents weigh on her. She drew the Moon card from the Deck of Many Things, gaining three Wish spells — and used one to restore Vaelios's soul after he drew the Void card, an act of profound faith tested in a moment of chaos.",
+      "status": "active",
+      "relatedNodeIds": [
+        "athisa",
+        "vaelios",
+        "deck-of-many-things"
+      ],
+      "session": 1
+    }
   ]
 }

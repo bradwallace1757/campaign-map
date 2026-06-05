@@ -9,6 +9,8 @@ import { EditMapModal } from './components/EditMapModal';
 import { SettingsModal } from './components/SettingsModal';
 import { NodeModal } from './components/NodeModal';
 import { EdgeModal } from './components/EdgeModal';
+import { PlotThreadPanel } from './components/PlotThreadPanel';
+import { PlotThreadModal } from './components/PlotThreadModal';
 
 function AppInner() {
   const [searchHighlightId, setSearchHighlightId]   = useState<string | null>(null);
@@ -21,6 +23,9 @@ function AppInner() {
   const [edgeModalOpen, setEdgeModalOpen]            = useState(false);
   const [editEdgeId, setEditEdgeId]                  = useState<string | null>(null);
   const [prefillSourceId, setPrefillSourceId]        = useState<string | null>(null);
+  const [plotPanelOpen, setPlotPanelOpen]            = useState(false);
+  const [plotModalOpen, setPlotModalOpen]            = useState(false);
+  const [editPlotId, setEditPlotId]                  = useState<string | null>(null);
 
   const { setCenter, getNode } = useReactFlow();
   const selectNode             = useMapStore((s) => s.selectNode);
@@ -59,6 +64,20 @@ function AppInner() {
     setEdgeModalOpen(true);
   }
 
+  function openAddPlot() {
+    setEditPlotId(null);
+    setPlotModalOpen(true);
+  }
+
+  function openEditPlot(id: string) {
+    setEditPlotId(id);
+    setPlotModalOpen(true);
+  }
+
+  const handleJumpToNode = useCallback((nodeId: string) => {
+    handleSearchSelect(nodeId);
+  }, [handleSearchSelect]);
+
   if (!loaded) {
     return (
       <div style={{ width: '100vw', height: '100vh', display: 'flex', alignItems: 'center', justifyContent: 'center', background: '#1e1f24', color: '#9ca3af', flexDirection: 'column', gap: 12 }}>
@@ -72,12 +91,21 @@ function AppInner() {
     <div style={{ width: '100vw', height: '100vh', position: 'relative', overflow: 'hidden' }}>
       <MapCanvas searchHighlightId={searchHighlightId} />
 
+      <PlotThreadPanel
+        open={plotPanelOpen}
+        onAddPlot={openAddPlot}
+        onEditPlot={openEditPlot}
+        onJumpToNode={handleJumpToNode}
+      />
+
       <Toolbar
         onImport={() => setImportOpen(true)}
         onEditMap={() => setEditOpen(true)}
         onAddNode={openAddNode}
         onSettings={() => setSettingsOpen(true)}
         onSearchSelect={handleSearchSelect}
+        plotPanelOpen={plotPanelOpen}
+        onTogglePlotPanel={() => setPlotPanelOpen((v) => !v)}
       />
 
       <DetailPanel
@@ -99,6 +127,11 @@ function AppInner() {
         onClose={() => setEdgeModalOpen(false)}
         editEdgeId={editEdgeId}
         prefillSourceId={prefillSourceId}
+      />
+      <PlotThreadModal
+        open={plotModalOpen}
+        onClose={() => setPlotModalOpen(false)}
+        editPlotId={editPlotId}
       />
     </div>
   );

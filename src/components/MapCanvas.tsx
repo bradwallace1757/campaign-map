@@ -25,9 +25,23 @@ interface MapCanvasProps {
 }
 
 export function MapCanvas({ searchHighlightId }: MapCanvasProps) {
-  const storeNodes      = useMapStore((s) => s.nodes);
-  const storeEdges      = useMapStore((s) => s.edges);
+  const allNodes        = useMapStore((s) => s.nodes);
+  const allEdges        = useMapStore((s) => s.edges);
   const settings        = useMapStore((s) => s.settings);
+  const gmMode          = useMapStore((s) => s.gmMode);
+
+  // Memoize so the array reference only changes when the underlying data or gmMode changes.
+  // Without useMemo the inline filter produces a new reference every render, which
+  // feeds into the [storeNodes] effect below and causes an infinite render loop.
+  const storeNodes = useMemo(
+    () => gmMode ? allNodes : allNodes.filter((n) => !n.hidden),
+    [allNodes, gmMode]
+  );
+  const storeEdges = useMemo(() => {
+    if (gmMode) return allEdges;
+    const hiddenNodeIds = new Set(allNodes.filter((n) => n.hidden).map((n) => n.id));
+    return allEdges.filter((e) => !e.hidden && !hiddenNodeIds.has(e.source) && !hiddenNodeIds.has(e.target));
+  }, [allEdges, allNodes, gmMode]);
   const setNodePosition = useMapStore((s) => s.setNodePosition);
   const selectedNodeId  = useMapStore((s) => s.selectedNodeId);
   const { fitView }     = useReactFlow();
@@ -41,18 +55,18 @@ export function MapCanvas({ searchHighlightId }: MapCanvasProps) {
   const [rfEdges, setRfEdges, onEdgesChange] = useEdgesState<Edge>([]);
 
   // Helper: build an RF node from a store node + current position
-  const makeRfNode = useCallback((n: typeof storeNodes[number], pos: { x: number; y: number }): Node => {
+  const makeRfNode = useCallback((n: typeof allNodes[number], pos: { x: number; y: number }): Node => {
     const color       = settings.nodeColors[n.type as NodeType] ?? '#888';
     const highlighted = searchHighlightId === n.id;
     const dimmed      = searchHighlightId !== null && !highlighted;
-    const data: MapNodeData = { name: n.name, nodeType: n.type, color, highlighted, dimmed };
+    const data: MapNodeData = { name: n.name, nodeType: n.type, color, highlighted, dimmed, gmHidden: gmMode && !!n.hidden };
     return {
       id:       n.id,
       type:     'mapNode' as const,
       position: pos,
       data:     data as unknown as Record<string, unknown>,
     };
-  }, [settings.nodeColors, searchHighlightId]);
+  }, [settings.nodeColors, searchHighlightId, gmMode]);
 
   // Sync store structure → RF nodes (when nodes are added/removed or settings change)
   useEffect(() => {
@@ -86,6 +100,7 @@ export function MapCanvas({ searchHighlightId }: MapCanvasProps) {
         (e.source === selectedNodeId || e.target === selectedNodeId);
       const hasSelection = selectedNodeId !== null;
 
+      const isGmHidden = gmMode && !!e.hidden;
       return {
         id:     e.id,
         source: e.source,
@@ -97,12 +112,15 @@ export function MapCanvas({ searchHighlightId }: MapCanvasProps) {
         labelBgStyle:   { fill: 'rgba(30,31,36,0.92)', rx: 3, ry: 3 },
         labelBgPadding: [3, 6] as [number, number],
         style: {
-          stroke: isConnected
-            ? 'rgba(167,139,250,0.8)'      // bright purple for connected edges
+          stroke: isGmHidden
+            ? 'rgba(234,179,8,0.35)'       // amber for GM-only hidden edges
+            : isConnected
+            ? 'rgba(167,139,250,0.8)'
             : hasSelection
-            ? 'rgba(148,163,184,0.08)'     // nearly invisible when something else selected
-            : 'rgba(148,163,184,0.25)',    // default faint
+            ? 'rgba(148,163,184,0.08)'
+            : 'rgba(148,163,184,0.25)',
           strokeWidth: isConnected ? 2 : 1.5,
+          strokeDasharray: isGmHidden ? '5 4' : undefined,
           transition: 'stroke 0.2s, opacity 0.2s',
         },
         markerEnd: undefined,

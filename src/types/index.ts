@@ -17,6 +17,7 @@ export interface MapNode {
   name: string;
   summary: string;
   tags: string[];
+  hidden?: boolean;
   // Position on the canvas
   position: { x: number; y: number };
 }
@@ -27,6 +28,7 @@ export interface MapEdge {
   target: string; // MapNode id
   label: string;
   type: EdgeType;
+  hidden?: boolean;
 }
 
 export interface MapData {
@@ -44,6 +46,20 @@ export interface ParsedProposal {
 export interface AppSettings {
   background: string;
   nodeColors: Record<NodeType, string>;
+}
+
+export type PlotStatus = 'active' | 'dormant' | 'resolved';
+export type PlotPriority = 'high' | 'medium' | 'low';
+
+export interface PlotThread {
+  id: string;
+  title: string;
+  summary: string;
+  status: PlotStatus;
+  priority?: PlotPriority;
+  relatedNodeIds: string[];
+  session?: number;
+  hidden?: boolean;
 }
 
 export const DEFAULT_SETTINGS: AppSettings = {

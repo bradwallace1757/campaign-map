@@ -1,17 +1,23 @@
 import { create } from 'zustand';
-import type { MapNode, MapEdge, AppSettings } from '../types';
+import type { MapNode, MapEdge, AppSettings, PlotThread } from '../types';
 import { DEFAULT_SETTINGS } from '../types';
 
 interface MapStore {
   nodes: MapNode[];
   edges: MapEdge[];
+  plots: PlotThread[];
   settings: AppSettings;
   selectedNodeId: string | null;
   gmMode: boolean;
   toggleGmMode: () => void;
 
   // Load from JSON object
-  loadData: (nodes: MapNode[], edges: MapEdge[]) => void;
+  loadData: (nodes: MapNode[], edges: MapEdge[], plots?: PlotThread[]) => void;
+
+  // Plot thread actions
+  addPlot: (plot: PlotThread) => void;
+  updatePlot: (id: string, updates: Partial<PlotThread>) => void;
+  deletePlot: (id: string) => void;
 
   // Node actions
   addNode: (node: MapNode) => void;
@@ -34,19 +40,20 @@ interface MapStore {
   exportJSON: () => string;
 }
 
+
 // Auto-save to localStorage whenever state changes
 const STORAGE_KEY = 'dnd-campaign-map';
 const SETTINGS_KEY = 'dnd-campaign-map-settings';
 
-function saveToStorage(nodes: MapNode[], edges: MapEdge[]) {
+function saveToStorage(nodes: MapNode[], edges: MapEdge[], plots: PlotThread[]) {
   try {
-    localStorage.setItem(STORAGE_KEY, JSON.stringify({ nodes, edges }));
+    localStorage.setItem(STORAGE_KEY, JSON.stringify({ nodes, edges, plots }));
   } catch (e) {
     console.warn('Could not save to localStorage', e);
   }
 }
 
-function loadFromStorage(): { nodes: MapNode[]; edges: MapEdge[] } | null {
+function loadFromStorage(): { nodes: MapNode[]; edges: MapEdge[]; plots?: PlotThread[] } | null {
   try {
     const raw = localStorage.getItem(STORAGE_KEY);
     if (raw) return JSON.parse(raw);
@@ -87,59 +94,82 @@ export function saveApiKey(key: string) {
 export const useMapStore = create<MapStore>((set, get) => ({
   nodes: [],
   edges: [],
+  plots: [],
   settings: loadSettingsFromStorage(),
   selectedNodeId: null,
   gmMode: false,
   toggleGmMode: () => set((s) => ({ gmMode: !s.gmMode })),
 
-  loadData: (nodes, edges) => {
-    set({ nodes, edges });
-    saveToStorage(nodes, edges);
+  loadData: (nodes, edges, plots = []) => {
+    set({ nodes, edges, plots });
+    saveToStorage(nodes, edges, plots);
   },
 
   addNode: (node) => {
     const nodes = [...get().nodes, node];
-    const edges = get().edges;
+    const { edges, plots } = get();
     set({ nodes });
-    saveToStorage(nodes, edges);
+    saveToStorage(nodes, edges, plots);
   },
 
   updateNode: (id, updates) => {
     const nodes = get().nodes.map((n) => (n.id === id ? { ...n, ...updates } : n));
-    const edges = get().edges;
+    const { edges, plots } = get();
     set({ nodes });
-    saveToStorage(nodes, edges);
+    saveToStorage(nodes, edges, plots);
   },
 
   deleteNode: (id) => {
     const nodes = get().nodes.filter((n) => n.id !== id);
     const edges = get().edges.filter((e) => e.source !== id && e.target !== id);
-    set({ nodes, edges, selectedNodeId: get().selectedNodeId === id ? null : get().selectedNodeId });
-    saveToStorage(nodes, edges);
+    const plots = get().plots.map((p) => ({
+      ...p,
+      relatedNodeIds: p.relatedNodeIds.filter((nid) => nid !== id),
+    }));
+    set({ nodes, edges, plots, selectedNodeId: get().selectedNodeId === id ? null : get().selectedNodeId });
+    saveToStorage(nodes, edges, plots);
   },
 
   setNodePosition: (id, position) => {
     const nodes = get().nodes.map((n) => (n.id === id ? { ...n, position } : n));
     set({ nodes });
-    saveToStorage(nodes, get().edges);
+    saveToStorage(nodes, get().edges, get().plots);
   },
 
   addEdge: (edge) => {
     const edges = [...get().edges, edge];
     set({ edges });
-    saveToStorage(get().nodes, edges);
+    saveToStorage(get().nodes, edges, get().plots);
   },
 
   updateEdge: (id, updates) => {
     const edges = get().edges.map((e) => (e.id === id ? { ...e, ...updates } : e));
     set({ edges });
-    saveToStorage(get().nodes, edges);
+    saveToStorage(get().nodes, edges, get().plots);
   },
 
   deleteEdge: (id) => {
     const edges = get().edges.filter((e) => e.id !== id);
     set({ edges });
-    saveToStorage(get().nodes, edges);
+    saveToStorage(get().nodes, edges, get().plots);
+  },
+
+  addPlot: (plot) => {
+    const plots = [...get().plots, plot];
+    set({ plots });
+    saveToStorage(get().nodes, get().edges, plots);
+  },
+
+  updatePlot: (id, updates) => {
+    const plots = get().plots.map((p) => (p.id === id ? { ...p, ...updates } : p));
+    set({ plots });
+    saveToStorage(get().nodes, get().edges, plots);
+  },
+
+  deletePlot: (id) => {
+    const plots = get().plots.filter((p) => p.id !== id);
+    set({ plots });
+    saveToStorage(get().nodes, get().edges, plots);
   },
 
   selectNode: (id) => set({ selectedNodeId: id }),
@@ -154,8 +184,8 @@ export const useMapStore = create<MapStore>((set, get) => ({
   },
 
   exportJSON: () => {
-    const { nodes, edges } = get();
-    return JSON.stringify({ nodes, edges }, null, 2);
+    const { nodes, edges, plots } = get();
+    return JSON.stringify({ nodes, edges, plots }, null, 2);
   },
 }));
 
@@ -166,7 +196,7 @@ export async function initStore() {
     const res = await fetch('./data/campaign-map.json');
     if (res.ok) {
       const data = await res.json();
-      useMapStore.getState().loadData(data.nodes, data.edges);
+      useMapStore.getState().loadData(data.nodes, data.edges, data.plots ?? []);
       return;
     }
   } catch (e) {
@@ -175,6 +205,6 @@ export async function initStore() {
   // Fallback to localStorage if JSON fetch fails (e.g. offline)
   const stored = loadFromStorage();
   if (stored && stored.nodes.length > 0) {
-    useMapStore.getState().loadData(stored.nodes, stored.edges);
+    useMapStore.getState().loadData(stored.nodes, stored.edges, stored.plots ?? []);
   }
 }

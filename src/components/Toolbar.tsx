@@ -8,6 +8,8 @@ interface ToolbarProps {
   onAddNode: () => void;
   onSettings: () => void;
   onSearchSelect: (nodeId: string) => void;
+  plotPanelOpen: boolean;
+  onTogglePlotPanel: () => void;
 }
 
 const panel: React.CSSProperties = {
@@ -65,7 +67,7 @@ const btnGmOff: React.CSSProperties = {
   fontSize: 12,
 };
 
-export function Toolbar({ onImport, onEditMap, onAddNode, onSettings, onSearchSelect }: ToolbarProps) {
+export function Toolbar({ onImport, onEditMap, onAddNode, onSettings, onSearchSelect, plotPanelOpen, onTogglePlotPanel }: ToolbarProps) {
   const exportJSON   = useMapStore((s) => s.exportJSON);
   const nodes        = useMapStore((s) => s.nodes);
   const edges        = useMapStore((s) => s.edges);
@@ -103,13 +105,28 @@ export function Toolbar({ onImport, onEditMap, onAddNode, onSettings, onSearchSe
   return (
     <div className="absolute top-4 left-0 right-0 flex items-center justify-between px-4 z-40 pointer-events-none">
 
-      {/* Left — title + node/edge count */}
+      {/* Left — title + node/edge count + plots toggle */}
       <div className="pointer-events-auto" style={panel}>
         <span style={{ fontWeight: 700, fontSize: 15, color: '#f3f4f6' }}>⚔️ Campaign Map</span>
         <span style={{ fontSize: 11, color: '#4b5563' }}>|</span>
         <span style={{ fontSize: 11, color: '#6b7280' }}>
           {nodes.length} nodes · {edges.length} connections
         </span>
+        <span style={{ width: 1, height: 16, background: 'rgba(255,255,255,0.1)', display: 'inline-block', margin: '0 2px' }} />
+        <button
+          style={{
+            ...btnBase,
+            background: plotPanelOpen ? 'rgba(79,70,229,0.18)' : 'rgba(255,255,255,0.06)',
+            color: plotPanelOpen ? '#818cf8' : '#9ca3af',
+            border: `1px solid ${plotPanelOpen ? 'rgba(79,70,229,0.4)' : 'rgba(255,255,255,0.1)'}`,
+            padding: '4px 10px',
+            fontSize: 12,
+          }}
+          onClick={onTogglePlotPanel}
+          title="Toggle plot threads panel"
+        >
+          📜 Plots
+        </button>
       </div>
 
       {/* Center — search */}

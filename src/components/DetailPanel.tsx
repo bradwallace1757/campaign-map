@@ -31,6 +31,7 @@ export function DetailPanel({ onEdit, onAddEdge }: DetailPanelProps) {
   const selectNode     = useMapStore((s) => s.selectNode);
   const deleteNode     = useMapStore((s) => s.deleteNode);
   const deleteEdge     = useMapStore((s) => s.deleteEdge);
+  const updateNode     = useMapStore((s) => s.updateNode);
   const settings       = useMapStore((s) => s.settings);
   const gmMode         = useMapStore((s) => s.gmMode);
 
@@ -257,41 +258,57 @@ export function DetailPanel({ onEdit, onAddEdge }: DetailPanelProps) {
               <div style={{
                 padding: '12px 20px',
                 borderTop: '1px solid rgba(255,255,255,0.07)',
-                display: 'flex', gap: 8,
+                display: 'flex', flexDirection: 'column', gap: 8,
               }}>
+                {/* Hide from players toggle */}
                 <button
-                  onClick={() => onEdit(node.id)}
+                  onClick={() => updateNode(node.id, { hidden: !node.hidden })}
                   style={{
-                    flex: 1, padding: '8px 0', borderRadius: 8, cursor: 'pointer',
-                    background: 'rgba(255,255,255,0.07)',
-                    border: '1px solid rgba(255,255,255,0.12)',
-                    color: '#d1d5db', fontSize: 13, fontWeight: 500,
+                    width: '100%', padding: '7px 0', borderRadius: 8, cursor: 'pointer',
+                    background: node.hidden ? 'rgba(234,179,8,0.12)' : 'rgba(255,255,255,0.05)',
+                    border: `1px solid ${node.hidden ? 'rgba(234,179,8,0.35)' : 'rgba(255,255,255,0.1)'}`,
+                    color: node.hidden ? '#fbbf24' : '#6b7280',
+                    fontSize: 12, fontWeight: 500,
+                    display: 'flex', alignItems: 'center', justifyContent: 'center', gap: 6,
                   }}
                 >
-                  ✏️ Edit
+                  {node.hidden ? '🔒 Hidden from players' : '👁 Visible to players'}
                 </button>
-                <button
-                  onClick={() => onAddEdge(node.id)}
-                  style={{
-                    padding: '8px 14px', borderRadius: 8, cursor: 'pointer',
-                    background: 'rgba(79,70,229,0.12)',
-                    border: '1px solid rgba(79,70,229,0.3)',
-                    color: '#818cf8', fontSize: 13,
-                  }}
-                >
-                  🔗
-                </button>
-                <button
-                  onClick={handleDelete}
-                  style={{
-                    padding: '8px 14px', borderRadius: 8, cursor: 'pointer',
-                    background: 'rgba(220,38,38,0.12)',
-                    border: '1px solid rgba(220,38,38,0.25)',
-                    color: '#f87171', fontSize: 13,
-                  }}
-                >
-                  🗑
-                </button>
+                <div style={{ display: 'flex', gap: 8 }}>
+                  <button
+                    onClick={() => onEdit(node.id)}
+                    style={{
+                      flex: 1, padding: '8px 0', borderRadius: 8, cursor: 'pointer',
+                      background: 'rgba(255,255,255,0.07)',
+                      border: '1px solid rgba(255,255,255,0.12)',
+                      color: '#d1d5db', fontSize: 13, fontWeight: 500,
+                    }}
+                  >
+                    ✏️ Edit
+                  </button>
+                  <button
+                    onClick={() => onAddEdge(node.id)}
+                    style={{
+                      padding: '8px 14px', borderRadius: 8, cursor: 'pointer',
+                      background: 'rgba(79,70,229,0.12)',
+                      border: '1px solid rgba(79,70,229,0.3)',
+                      color: '#818cf8', fontSize: 13,
+                    }}
+                  >
+                    🔗
+                  </button>
+                  <button
+                    onClick={handleDelete}
+                    style={{
+                      padding: '8px 14px', borderRadius: 8, cursor: 'pointer',
+                      background: 'rgba(220,38,38,0.12)',
+                      border: '1px solid rgba(220,38,38,0.25)',
+                      color: '#f87171', fontSize: 13,
+                    }}
+                  >
+                    🗑
+                  </button>
+                </div>
               </div>
             )}
           </>
