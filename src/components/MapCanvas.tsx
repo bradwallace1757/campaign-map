@@ -20,6 +20,12 @@ import { useForceSimulation } from '../hooks/useForceSimulation';
 
 const NODE_TYPES = { mapNode: MapNodeComponent };
 
+// Map a node's connection count (degree) to a circle diameter.
+// 0 connections → 38px, scaling up gently to a 72px cap for the busiest hubs.
+function sizeForDegree(degree: number): number {
+  return Math.round(Math.max(38, Math.min(72, 38 + degree * 4)));
+}
+
 interface MapCanvasProps {
   searchHighlightId: string | null;
 }
@@ -42,6 +48,16 @@ export function MapCanvas({ searchHighlightId }: MapCanvasProps) {
     const hiddenNodeIds = new Set(allNodes.filter((n) => n.hidden).map((n) => n.id));
     return allEdges.filter((e) => !e.hidden && !hiddenNodeIds.has(e.source) && !hiddenNodeIds.has(e.target));
   }, [allEdges, allNodes, gmMode]);
+  // Connection count per node (based on currently visible edges).
+  const degreeById = useMemo(() => {
+    const m: Record<string, number> = {};
+    storeEdges.forEach((e) => {
+      m[e.source] = (m[e.source] ?? 0) + 1;
+      m[e.target] = (m[e.target] ?? 0) + 1;
+    });
+    return m;
+  }, [storeEdges]);
+
   const setNodePosition = useMapStore((s) => s.setNodePosition);
   const selectedNodeId  = useMapStore((s) => s.selectedNodeId);
   const { fitView }     = useReactFlow();
@@ -59,20 +75,21 @@ export function MapCanvas({ searchHighlightId }: MapCanvasProps) {
     const color       = settings.nodeColors[n.type as NodeType] ?? '#888';
     const highlighted = searchHighlightId === n.id;
     const dimmed      = searchHighlightId !== null && !highlighted;
-    const data: MapNodeData = { name: n.name, nodeType: n.type, color, highlighted, dimmed, gmHidden: gmMode && !!n.hidden };
+    const size        = sizeForDegree(degreeById[n.id] ?? 0);
+    const data: MapNodeData = { name: n.name, nodeType: n.type, color, highlighted, dimmed, gmHidden: gmMode && !!n.hidden, size };
     return {
       id:       n.id,
       type:     'mapNode' as const,
       position: pos,
       data:     data as unknown as Record<string, unknown>,
     };
-  }, [settings.nodeColors, searchHighlightId, gmMode]);
+  }, [settings.nodeColors, searchHighlightId, gmMode, degreeById]);
 
   // Sync store structure → RF nodes (when nodes are added/removed or settings change)
   useEffect(() => {
     setRfNodes(storeNodes.map((n) => makeRfNode(n, positions[n.id] ?? n.position)));
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [storeNodes, settings.nodeColors]);
+  }, [storeNodes, settings.nodeColors, degreeById]);
 
   // Sync simulation positions → RF nodes on every physics tick
   useEffect(() => {

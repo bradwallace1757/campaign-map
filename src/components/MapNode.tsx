@@ -11,6 +11,7 @@ export interface MapNodeData extends Record<string, unknown> {
   dimmed?: boolean;
   draggingNeighbor?: boolean;
   gmHidden?: boolean;
+  size?: number;
 }
 
 export function MapNodeComponent({ id, data }: NodeProps) {
@@ -31,24 +32,29 @@ export function MapNodeComponent({ id, data }: NodeProps) {
 
   const ringWidth = isSelected || d.highlighted ? 3 : d.gmHidden ? 2 : 0;
 
+  // Circle diameter scales with connection count (set in MapCanvas); default 48.
+  const size   = d.size ?? 48;
+  const half   = size / 2;
+  const handleStyle = { opacity: 0, pointerEvents: 'none' as const, top: half, left: '50%', transform: 'translate(-50%,-50%)' };
+
   return (
     <div
       style={{ opacity, transition: 'opacity 0.2s' }}
       className="flex flex-col items-center cursor-pointer select-none"
       onClick={() => selectNode(isSelected ? null : id)}
     >
-      {/* All handles pinned to circle center (top:24 = half of 48px circle) */}
-      <Handle type="target" position={Position.Top}    style={{ opacity: 0, pointerEvents: 'none', top: 24, left: '50%', transform: 'translate(-50%,-50%)' }} />
-      <Handle type="source" position={Position.Bottom} style={{ opacity: 0, pointerEvents: 'none', top: 24, left: '50%', transform: 'translate(-50%,-50%)' }} />
-      <Handle type="target" position={Position.Left}   style={{ opacity: 0, pointerEvents: 'none', top: 24, left: '50%', transform: 'translate(-50%,-50%)' }} />
-      <Handle type="source" position={Position.Right}  style={{ opacity: 0, pointerEvents: 'none', top: 24, left: '50%', transform: 'translate(-50%,-50%)' }} />
+      {/* All handles pinned to circle center (top = half the circle diameter) */}
+      <Handle type="target" position={Position.Top}    style={handleStyle} />
+      <Handle type="source" position={Position.Bottom} style={handleStyle} />
+      <Handle type="target" position={Position.Left}   style={handleStyle} />
+      <Handle type="source" position={Position.Right}  style={handleStyle} />
 
       {/* Circle */}
       <div style={{ position: 'relative' }}>
         <div
           style={{
-            width: 48,
-            height: 48,
+            width: size,
+            height: size,
             borderRadius: '50%',
             backgroundColor: d.color,
             border: `${ringWidth}px solid ${ringColor}`,
