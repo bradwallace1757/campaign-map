@@ -11,8 +11,8 @@
         "orphan"
       ],
       "position": {
-        "x": 100,
-        "y": 80
+        "x": 629.2161009710059,
+        "y": 81.0352447056383
       }
     },
     {
@@ -393,6 +393,174 @@
         "x": 145.75834751457782,
         "y": 322.4571951382144
       }
+    },
+    {
+      "id": "sir-dellvon",
+      "type": "npc",
+      "name": "Dellvon Ludwig",
+      "summary": "A clleric encountered by Actaeon at the House of the Triad in Bryn Shander. He urged Actaeon to seek out Sir Baric Nylef for counsel and influence.",
+      "tags": [
+        "priest",
+        "house-of-the-triad",
+        "bryn-shander"
+      ],
+      "position": {
+        "x": 579.4235383991675,
+        "y": 261.02748535337656
+      }
+    },
+    {
+      "id": "sirac-cimber",
+      "type": "npc",
+      "name": "Sirac Cimber",
+      "summary": "A man encountered at the House of the Triad who later revealed that the frost giants were targeting his father, Artus Cimber, the possessor of the legendary Ring of Winter.",
+      "tags": [
+        "bryn-shander",
+        "artus-cimber",
+        "ring-of-winter"
+      ],
+      "position": {
+        "x": 600.4727308999801,
+        "y": 506.1902651248027
+      }
+    },
+    {
+      "id": "sir-baric-nylef",
+      "type": "npc",
+      "name": "Sir Baric Nylef",
+      "summary": "A veteran knight found at Geldin's Rest in Bryn Shander. Sir Dellvon and Sirac Cimber recommended him to Actaeon as someone whose knowledge and influence would be valuable.",
+      "tags": [
+        "knight",
+        "bryn-shander",
+        "veteran"
+      ],
+      "position": {
+        "x": 376.62000740564395,
+        "y": 606.1846777810955
+      }
+    },
+    {
+      "id": "beldora",
+      "type": "npc",
+      "name": "Beldora",
+      "summary": "A ragged vagrant woman in Bryn Shander's town square who is far more observant than she appears. She cryptically revealed that an unnamed organization is keeping watch throughout Bryn Shander, hinting at hidden networks in the city.",
+      "tags": [
+        "informant",
+        "bryn-shander",
+        "mysterious",
+        "vagrant"
+      ],
+      "position": {
+        "x": 153.74092982583227,
+        "y": 714.8586417378087
+      }
+    },
+    {
+      "id": "kella-darkhope",
+      "type": "npc",
+      "name": "Kella Darkhope",
+      "summary": "A Zhentarim agent posing as Sister Maren, a devout monk, at the Northlook Inn. She revealed herself to Sparkle and attempted to recruit her into advancing the Black Network's political interests across Ten-Towns.",
+      "tags": [
+        "zhentarim",
+        "spy",
+        "bryn-shander",
+        "northlook-inn"
+      ],
+      "position": {
+        "x": -73.0999663295803,
+        "y": 598.1195832885674
+      }
+    },
+    {
+      "id": "artus-cimber",
+      "type": "npc",
+      "name": "Artus Cimber",
+      "summary": "A famed adventurer and father of Sirac Cimber who possesses the legendary Ring of Winter. He is the target of twelve frost giants besieging Bryn Shander.",
+      "tags": [
+        "adventurer",
+        "ring-of-winter",
+        "wanted",
+        "frost-giants"
+      ],
+      "position": {
+        "x": -176.54609720270406,
+        "y": 377.1679494390509
+      }
+    },
+    {
+      "id": "ring-of-winter",
+      "type": "item",
+      "name": "Ring of Winter",
+      "summary": "A legendary and powerful artifact possessed by Artus Cimber, said to command ancient and terrible magic. It is the reason the frost giants have come to Bryn Shander demanding Artus's surrender.",
+      "tags": [
+        "artifact",
+        "magic",
+        "ring",
+        "frost-giants"
+      ],
+      "position": {
+        "x": -221.82166038958468,
+        "y": 131.59291643332935
+      }
+    },
+    {
+      "id": "frost-giants",
+      "type": "faction",
+      "name": "Frost Giants",
+      "summary": "A force of twelve frost giants who encircled Bryn Shander and demanded the surrender of Artus Cimber or threatened to destroy the city. They broke through the gates and stormed the city in search of the Ring of Winter.",
+      "tags": [
+        "giants",
+        "enemies",
+        "bryn-shander",
+        "siege"
+      ],
+      "position": {
+        "x": -16.631237475569122,
+        "y": -10.896225497987814
+      }
+    },
+    {
+      "id": "geldin-s-rest",
+      "type": "place",
+      "name": "Geldin's Rest",
+      "summary": "An inn or tavern in Bryn Shander where Actaeon and Vaelios located Sir Baric Nylef and began establishing a connection with him.",
+      "tags": [
+        "inn",
+        "bryn-shander"
+      ],
+      "position": {
+        "x": 165.25942823355325,
+        "y": -112.69075490392612
+      }
+    },
+    {
+      "id": "northlook-inn",
+      "type": "place",
+      "name": "Northlook Inn",
+      "summary": "An inn in Bryn Shander where Sparkle and Juliette took rooms. It was here that Sparkle met Kella Darkhope disguised as Sister Maren.",
+      "tags": [
+        "inn",
+        "bryn-shander"
+      ],
+      "position": {
+        "x": 404.2111488132049,
+        "y": -144.54587940115766
+      }
+    },
+    {
+      "id": "ten-towns",
+      "type": "place",
+      "name": "Ten-Towns",
+      "summary": "The collection of settlements in Icewind Dale, referenced as the region where the Zhentarim seek to expand their political influence.",
+      "tags": [
+        "icewind-dale",
+        "region",
+        "ten-towns"
+      ],
+      "position": {
+        "x": 558.2391299106545,
+        "y": 43.006592863087434
+      }
     }
   ],
   "edges": [
@@ -661,6 +829,167 @@
       "target": "deck-of-many-things",
       "label": "drew Flames card",
       "type": "other"
+    },
+    {
+      "id": "e-actaeon-sir-dellvon",
+      "source": "actaeon",
+      "target": "sir-dellvon",
+      "label": "met at House of Triad",
+      "type": "knows"
+    },
+    {
+      "id": "e-actaeon-sirac-cimber",
+      "source": "actaeon",
+      "target": "sirac-cimber",
+      "label": "met at House of Triad",
+      "type": "knows"
+    },
+    {
+      "id": "e-sir-dellvon-house-of-the-triad",
+      "source": "sir-dellvon",
+      "target": "house-of-the-triad",
+      "label": "based in",
+      "type": "other"
+    },
+    {
+      "id": "e-sirac-cimber-house-of-the-triad",
+      "source": "sirac-cimber",
+      "target": "house-of-the-triad",
+      "label": "encountered at",
+      "type": "other"
+    },
+    {
+      "id": "e-sir-dellvon-sir-baric-nylef",
+      "source": "sir-dellvon",
+      "target": "sir-baric-nylef",
+      "label": "referred Actaeon to",
+      "type": "knows"
+    },
+    {
+      "id": "e-sirac-cimber-sir-baric-nylef",
+      "source": "sirac-cimber",
+      "target": "sir-baric-nylef",
+      "label": "referred Actaeon to",
+      "type": "knows"
+    },
+    {
+      "id": "e-actaeon-sir-baric-nylef",
+      "source": "actaeon",
+      "target": "sir-baric-nylef",
+      "label": "sought counsel from",
+      "type": "allied"
+    },
+    {
+      "id": "e-vaelios-sir-baric-nylef",
+      "source": "vaelios",
+      "target": "sir-baric-nylef",
+      "label": "met at Geldin's Rest",
+      "type": "knows"
+    },
+    {
+      "id": "e-sparkle-beldora",
+      "source": "sparkle",
+      "target": "beldora",
+      "label": "gathered intel from",
+      "type": "knows"
+    },
+    {
+      "id": "e-beldora-bryn-shander",
+      "source": "beldora",
+      "target": "bryn-shander",
+      "label": "informant within",
+      "type": "other"
+    },
+    {
+      "id": "e-sparkle-kella-darkhope",
+      "source": "sparkle",
+      "target": "kella-darkhope",
+      "label": "recruited by",
+      "type": "distrusts"
+    },
+    {
+      "id": "e-kella-darkhope-zhentarim",
+      "source": "kella-darkhope",
+      "target": "zhentarim",
+      "label": "agent of",
+      "type": "member"
+    },
+    {
+      "id": "e-kella-darkhope-northlook-inn",
+      "source": "kella-darkhope",
+      "target": "northlook-inn",
+      "label": "operating from",
+      "type": "other"
+    },
+    {
+      "id": "e-sparkle-northlook-inn",
+      "source": "sparkle",
+      "target": "northlook-inn",
+      "label": "stayed at",
+      "type": "other"
+    },
+    {
+      "id": "e-juliette-northlook-inn",
+      "source": "juliette",
+      "target": "northlook-inn",
+      "label": "stayed at",
+      "type": "other"
+    },
+    {
+      "id": "e-sirac-cimber-artus-cimber",
+      "source": "sirac-cimber",
+      "target": "artus-cimber",
+      "label": "son of",
+      "type": "other"
+    },
+    {
+      "id": "e-artus-cimber-ring-of-winter",
+      "source": "artus-cimber",
+      "target": "ring-of-winter",
+      "label": "possesses",
+      "type": "other"
+    },
+    {
+      "id": "e-frost-giants-artus-cimber",
+      "source": "frost-giants",
+      "target": "artus-cimber",
+      "label": "seeks to capture",
+      "type": "seeks"
+    },
+    {
+      "id": "e-frost-giants-ring-of-winter",
+      "source": "frost-giants",
+      "target": "ring-of-winter",
+      "label": "seeks to obtain",
+      "type": "seeks"
+    },
+    {
+      "id": "e-frost-giants-bryn-shander",
+      "source": "frost-giants",
+      "target": "bryn-shander",
+      "label": "besieging",
+      "type": "enemy"
+    },
+    {
+      "id": "e-northlook-inn-bryn-shander",
+      "source": "northlook-inn",
+      "target": "bryn-shander",
+      "label": "located in",
+      "type": "other"
+    },
+    {
+      "id": "e-ten-towns-icewind-dale",
+      "source": "ten-towns",
+      "target": "icewind-dale",
+      "label": "located within",
+      "type": "other"
+    },
+    {
+      "id": "e-zhentarim-ten-towns",
+      "source": "zhentarim",
+      "target": "ten-towns",
+      "label": "seeks influence in",
+      "type": "seeks"
     }
   ],
   "plots": [
@@ -668,18 +997,15 @@
       "id": "giant-threat",
       "title": "The Giant Threat",
       "priority": "high",
-      "summary": "Giant attacks are increasing across Icewind Dale. Caravans are missing, farms destroyed, and even veteran traders are skipping their northern runs this season. Something has changed in the giants' hierarchy — the party must meet Mirelda Wester at Council Hall to learn more.",
+      "summary": "Twelve frost giants have besieged Bryn Shander, demanding the surrender of Artus Cimber, legendary adventurer and bearer of the Ring of Winter. The giants broke through the city gates and began storming the city, and the party is now caught in the chaos of the assault.",
       "status": "active",
       "relatedNodeIds": [
-        "athisa",
-        "sparkle",
-        "vaelios",
-        "juliette",
-        "actaeon",
-        "mirelda-wester",
-        "duvessa-shane",
+        "frost-giants",
+        "artus-cimber",
+        "ring-of-winter",
+        "sirac-cimber",
         "bryn-shander",
-        "icewind-dale"
+        "sir-baric-nylef"
       ],
       "session": 1
     },
@@ -701,11 +1027,14 @@
       "title": "Zhentarim Recruitment",
       "priority": "high",
       "hidden": true,
-      "summary": "The Zhentarim reached out to Sparkle in Elvish, claiming to know who destroyed her homeland Alluria and what was taken. They offer recognition, revenge, and power — but want a demonstration of her intentions. Her first contact is Kella Darkhope in Bryn Shander, posing as a traveling monk. A postscript noted they are already watching her.",
+      "summary": "Kella Darkhope, a Zhentarim agent disguised as a devout monk called Sister Maren, has made contact with Sparkle at the Northlook Inn and openly attempted to recruit her into advancing the Black Network's political ambitions across Ten-Towns.",
       "status": "active",
       "relatedNodeIds": [
-        "sparkle",
+        "kella-darkhope",
         "zhentarim",
+        "sparkle",
+        "northlook-inn",
+        "ten-towns",
         "bryn-shander"
       ],
       "session": 1
@@ -749,6 +1078,32 @@
         "deck-of-many-things"
       ],
       "session": 1
+    },
+    {
+      "id": "hidden-network-in-bryn-shander",
+      "title": "Hidden Network in Bryn Shander",
+      "summary": "Beldora, a seemingly vagrant woman in Bryn Shander, hinted to Sparkle that an unnamed organization is quietly monitoring activity throughout the city. The nature and identity of this group remains unknown.",
+      "status": "active",
+      "relatedNodeIds": [
+        "beldora",
+        "sparkle",
+        "bryn-shander"
+      ],
+      "session": 2
+    },
+    {
+      "id": "artus-cimber-and-the-ring-of-winter",
+      "title": "Artus Cimber and the Ring of Winter",
+      "summary": "Artus Cimber, father of Sirac Cimber, possesses the Ring of Winter, a powerful artifact that has drawn the wrath of a frost giant warband. His whereabouts are unknown but his presence in the region has directly triggered the siege of Bryn Shander.",
+      "status": "active",
+      "relatedNodeIds": [
+        "artus-cimber",
+        "ring-of-winter",
+        "sirac-cimber",
+        "frost-giants",
+        "bryn-shander"
+      ],
+      "session": 2
     }
   ]
 }
