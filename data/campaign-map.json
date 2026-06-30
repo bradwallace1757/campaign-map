@@ -98,8 +98,8 @@
         "quest giver"
       ],
       "position": {
-        "x": 534.8157875422462,
-        "y": -882.531435732933
+        "x": 368.38756078422296,
+        "y": 488.88260146039056
       }
     },
     {
@@ -230,8 +230,8 @@
         "current location"
       ],
       "position": {
-        "x": -37.269838076025486,
-        "y": -54.06168135474488
+        "x": 74.33970523618395,
+        "y": 311.0545677562649
       }
     },
     {
@@ -338,8 +338,8 @@
         "bryn-shander"
       ],
       "position": {
-        "x": 569.454439301704,
-        "y": -52.80551182134138
+        "x": 483.7070837385552,
+        "y": 576.3225427125863
       }
     },
     {
@@ -560,6 +560,127 @@
       "position": {
         "x": 558.2391299106545,
         "y": 43.006592863087434
+      }
+    },
+    {
+      "id": "drufi",
+      "type": "npc",
+      "name": "Drufi",
+      "summary": "The chieftain of the frost giant raiders who besieged Bryn Shander. She was slain by Actaeon's blessed javelin, causing the remaining giants to retreat.",
+      "tags": [
+        "frost giant",
+        "chieftain",
+        "enemy",
+        "deceased"
+      ],
+      "position": {
+        "x": 809.7637313288251,
+        "y": 329.2094515728433
+      }
+    },
+    {
+      "id": "thwip-ironbottom",
+      "type": "npc",
+      "name": "Thwip Ironbottom",
+      "summary": "A gnome inventor based in Hundelstone. Beldora tasked the party with traveling to Hundelstone to check on him.",
+      "tags": [
+        "gnome",
+        "inventor",
+        "hundelstone"
+      ],
+      "position": {
+        "x": 579.7200877145028,
+        "y": 579.4469159236118
+      }
+    },
+    {
+      "id": "hundelstone",
+      "type": "place",
+      "name": "Hundelstone",
+      "summary": "A settlement the party has been tasked with traveling to in order to check on the gnome inventor Thwip Ironbottom.",
+      "tags": [
+        "settlement",
+        "destination",
+        "ten-towns"
+      ],
+      "position": {
+        "x": 329.4826233637344,
+        "y": 806.2573119235193
+      }
+    },
+    {
+      "id": "waterdeep",
+      "type": "place",
+      "name": "Waterdeep",
+      "summary": "A major city the party has been directed toward to seek information about Artus Cimber's whereabouts and to secure ship passage along the Sword Coast.",
+      "tags": [
+        "city",
+        "destination",
+        "sword-coast"
+      ],
+      "position": {
+        "x": 39.367806858444624,
+        "y": 619.3242680781331
+      }
+    },
+    {
+      "id": "ironmaster",
+      "type": "place",
+      "name": "Ironmaster",
+      "summary": "A dwarven settlement that Augrek has asked the party to visit in order to convince her clan to send reinforcements to Bryn Shander.",
+      "tags": [
+        "dwarven",
+        "settlement",
+        "destination"
+      ],
+      "position": {
+        "x": -94.77880924460067,
+        "y": 329.20945157284336
+      }
+    },
+    {
+      "id": "harpers",
+      "type": "faction",
+      "name": "Harpers",
+      "summary": "A secretive organization working to promote good and balance across the Realms. Beldora was revealed to be one of their operatives.",
+      "tags": [
+        "faction",
+        "espionage",
+        "good-aligned"
+      ],
+      "position": {
+        "x": 34.96450469884462,
+        "y": 34.691332907953665
+      }
+    },
+    {
+      "id": "duvessa-s-aunt",
+      "type": "npc",
+      "name": "Duvessa's Aunt",
+      "summary": "A noble contact in Waterdeep, referred to by Duvessa Shane, who can help the party secure passage aboard a ship along the Sword Coast.",
+      "tags": [
+        "noble",
+        "waterdeep",
+        "contact"
+      ],
+      "position": {
+        "x": 329.4826233637342,
+        "y": -155.16439114997917
+      }
+    },
+    {
+      "id": "augrek-s-clan",
+      "type": "faction",
+      "name": "Augrek's Clan",
+      "summary": "Augrek Brighthelm's dwarven clan based in Ironmaster, whom the party has been asked to petition for reinforcements to send to Bryn Shander.",
+      "tags": [
+        "dwarven",
+        "clan",
+        "ironmaster"
+      ],
+      "position": {
+        "x": 598.5729045698124,
+        "y": 60.119170366765104
       }
     }
   ],
@@ -990,6 +1111,62 @@
       "target": "ten-towns",
       "label": "seeks influence in",
       "type": "seeks"
+    },
+    {
+      "id": "e-drufi-frost-giants",
+      "source": "drufi",
+      "target": "frost-giants",
+      "label": "chieftain of",
+      "type": "member"
+    },
+    {
+      "id": "e-actaeon-drufi",
+      "source": "actaeon",
+      "target": "drufi",
+      "label": "slew in battle",
+      "type": "enemy"
+    },
+    {
+      "id": "e-vaelios-odvar",
+      "source": "vaelios",
+      "target": "odvar-finch",
+      "label": "poisoned and killed",
+      "type": "enemy"
+    },
+    {
+      "id": "e-beldora-harpers",
+      "source": "beldora",
+      "target": "harpers",
+      "label": "operative of",
+      "type": "member"
+    },
+    {
+      "id": "e-beldora-thwip",
+      "source": "beldora",
+      "target": "thwip-ironbottom",
+      "label": "tasked party to check on",
+      "type": "knows"
+    },
+    {
+      "id": "e-beldora-hundelstone",
+      "source": "thwip-ironbottom",
+      "target": "hundelstone",
+      "label": "based in",
+      "type": "other"
+    },
+    {
+      "id": "e-sirac-waterdeep",
+      "source": "sirac-cimber",
+      "target": "waterdeep",
+      "label": "directed party toward",
+      "type": "seeks"
+    },
+    {
+      "id": "e-sparkle-beldora-detect",
+      "source": "sparkle",
+      "target": "beldora",
+      "label": "detected Harper affiliation",
+      "type": "knows"
     }
   ],
   "plots": [
@@ -997,15 +1174,19 @@
       "id": "giant-threat",
       "title": "The Giant Threat",
       "priority": "high",
-      "summary": "Twelve frost giants have besieged Bryn Shander, demanding the surrender of Artus Cimber, legendary adventurer and bearer of the Ring of Winter. The giants broke through the city gates and began storming the city, and the party is now caught in the chaos of the assault.",
+      "summary": "The frost giants besieging Bryn Shander were repelled after Actaeon slew their chieftain Drufi with a blessed javelin, routing the remaining raiders. The party now seeks to uncover the giants' broader motivations and stop further incursions, with leads pointing toward Artus Cimber and the Ring of Winter.",
       "status": "active",
       "relatedNodeIds": [
         "frost-giants",
-        "artus-cimber",
-        "ring-of-winter",
-        "sirac-cimber",
+        "drufi",
         "bryn-shander",
-        "sir-baric-nylef"
+        "actaeon",
+        "athisa",
+        "sparkle",
+        "juliette",
+        "vaelios",
+        "ring-of-winter",
+        "artus-cimber"
       ],
       "session": 1
     },
@@ -1014,7 +1195,7 @@
       "title": "Raven Queen's Order",
       "priority": "high",
       "summary": "The Raven Queen has ordered Vaelios to kill Odvar Finch, whose soul has evaded its natural death and is owed to the Nine Hells. She threatens to revoke his undead companions if he refuses. Vaelios has not yet acted. Complications: killing Finch may trigger a conflict between the Hells and the Raven Queen, and the party loses their magic item vendor.",
-      "status": "active",
+      "status": "resolved",
       "relatedNodeIds": [
         "vaelios",
         "raven-queen",
@@ -1026,7 +1207,7 @@
       "id": "zhentarim-recruitment",
       "title": "Zhentarim Recruitment",
       "priority": "high",
-      "hidden": true,
+      "hidden": false,
       "summary": "Kella Darkhope, a Zhentarim agent disguised as a devout monk called Sister Maren, has made contact with Sparkle at the Northlook Inn and openly attempted to recruit her into advancing the Black Network's political ambitions across Ten-Towns.",
       "status": "active",
       "relatedNodeIds": [
@@ -1082,11 +1263,14 @@
     {
       "id": "hidden-network-in-bryn-shander",
       "title": "Hidden Network in Bryn Shander",
-      "summary": "Beldora, a seemingly vagrant woman in Bryn Shander, hinted to Sparkle that an unnamed organization is quietly monitoring activity throughout the city. The nature and identity of this group remains unknown.",
+      "summary": "Beldora was revealed via Detect Thoughts to be a Harper operative, adding a new layer to the web of factions operating within Bryn Shander. She tasked the party with traveling to Hundelstone to check on gnome inventor Thwip Ironbottom.",
       "status": "active",
       "relatedNodeIds": [
         "beldora",
+        "harpers",
         "sparkle",
+        "hundelstone",
+        "thwip-ironbottom",
         "bryn-shander"
       ],
       "session": 2
@@ -1094,14 +1278,42 @@
     {
       "id": "artus-cimber-and-the-ring-of-winter",
       "title": "Artus Cimber and the Ring of Winter",
-      "summary": "Artus Cimber, father of Sirac Cimber, possesses the Ring of Winter, a powerful artifact that has drawn the wrath of a frost giant warband. His whereabouts are unknown but his presence in the region has directly triggered the siege of Bryn Shander.",
+      "summary": "Sirac confirmed his belief that his missing father Artus Cimber possesses the Ring of Winter, which the frost giants sought. He urged the party to travel to Waterdeep and consult a noble family who may know Artus's whereabouts.",
       "status": "active",
       "relatedNodeIds": [
+        "sirac-cimber",
         "artus-cimber",
         "ring-of-winter",
-        "sirac-cimber",
         "frost-giants",
-        "bryn-shander"
+        "waterdeep"
+      ],
+      "session": 2
+    },
+    {
+      "id": "road-to-waterdeep",
+      "title": "Road to Waterdeep",
+      "summary": "The party has been given multiple reasons to travel south toward Waterdeep: to learn about Artus Cimber's location from a noble family (per Sirac), and to secure ship passage along the Sword Coast through Duvessa's aunt. First stop is Hundelstone to check on Thwip Ironbottom.",
+      "status": "active",
+      "relatedNodeIds": [
+        "sirac-cimber",
+        "duvessa-shane",
+        "waterdeep",
+        "hundelstone",
+        "thwip-ironbottom",
+        "augrek-brighthelm",
+        "ironmaster"
+      ],
+      "session": 2
+    },
+    {
+      "id": "disappearance-of-finch-s-findings",
+      "title": "Disappearance of Finch's Findings",
+      "summary": "After Vaelios poisoned and killed Odvar Finch, the shop Finch's Findings vanished without a trace, along with all its magical artifacts. Whether this was an illusion, powerful protective magic, or something stranger remains a mystery.",
+      "status": "active",
+      "relatedNodeIds": [
+        "vaelios",
+        "odvar-finch",
+        "finch-s-findings"
       ],
       "session": 2
     }
